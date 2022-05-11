@@ -4,8 +4,8 @@
       <nav class="text-lg font-semibold text-slate-200">My Super Heroes List</nav>
     </div>
     
-    <div class="w-full flex justify-center">
-      <div class="mt-10 px-5 pb-5 w-3/5 border-2 border-gray-300 rounded">
+    <div class="w-full px-2 md:px-0 flex justify-center">
+      <div class="mt-10 px-5 pb-5 w-full md:w-3/5 border-2 border-gray-300 rounded">
         <p class="py-3 px-5 mt-5 bg-gradient-to-r from-orange-200 to-amber-300 text-sm font-semibold" v-if="heroes.length < 1"> {{ emptyList }}</p>
 
         <div v-else>
