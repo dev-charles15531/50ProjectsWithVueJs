@@ -53,37 +53,37 @@
                  */
                 testimonies: [
                     {
-                        name: "Charles Paul", 
+                        name: "Michelle Takers", 
                         img: "src/assets/imgs/img1.jpg", 
                         occupation: "Web Developer", 
                         rating: 3, 
-                        testimony: "I had a great time using vue js"
+                        testimony: "Take my word for it gusy vue js is worth it. Check the community, projects and stackoverflow, you'll understand what i mean"
                     },
                     {
-                        name: " Paul", 
+                        name: "Charles Darwin", 
                         img: "src/assets/imgs/img2.jpg", 
-                        occupation: "Web Developer", 
-                        rating: 2, 
-                        testimony: "I had a great time using vue js"
+                        occupation: "Software Engineer", 
+                        rating: 3, 
+                        testimony: "I had a pretty good time using vue js"
                     },
                     {
-                        name: "Charles ", 
+                        name: "Lennon McPaul ", 
                         img: "src/assets/imgs/img3.jpg", 
                         occupation: "Web Developer", 
                         rating: 4, 
                         testimony: "I had to literally rewrite my company's website. Initially, it was jquery, an now vue. I love you Evan"
                     },
                     {
-                        name: " Paul", 
+                        name: "Drew Peters", 
                         img: "src/assets/imgs/img4.jpg", 
-                        occupation: "Web Developer", 
+                        occupation: "CTO Tech Lead", 
                         rating: 5, 
                         testimony: "The mind blowing thing about vue js is its steep learning curve. Believe me, if you're a good js developer, you can master vue js in just 50 days."
                     },
                     {
-                        name: "Charles ", 
+                        name: "Peter Parker", 
                         img: "src/assets/imgs/img5.jpg", 
-                        occupation: "Web Developer", 
+                        occupation: "CEO Peakersoft", 
                         rating: 5, 
                         testimony: "I had a great time developing in vue js. It is fast and very scalable."
                     },
