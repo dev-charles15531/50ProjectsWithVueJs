@@ -13,7 +13,7 @@
                 <h1 class="font-semibold text-gray-700 font-sans">{{ note.title }}</h1>
                 <h1 class="text-xs text-gray-700 font-sans">{{ formatDate(note.dateCreated)  }}</h1>
               </div>
-              <button class="font-extrabold opacity-100 text-teal-600 text-xl hover:text-2xl" @click="removeNote(note.id)">&times;</button>
+              <button class="font-extrabold opacity-100 text-teal-600 text-xl hover:text-2xl" @click.prevent="removeNote(note.id)">&times;</button>
             </router-link>
           </div>
         </div>
