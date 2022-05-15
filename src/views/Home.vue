@@ -22,6 +22,10 @@ export default {
   },
 
   computed: {
+    /**
+     * Gets the css background-color property from input
+     * @return {string} The background color property
+     */
     getBgColor() {
       return "background-color:" + this.color + ";"
     }
