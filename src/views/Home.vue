@@ -78,6 +78,7 @@
 export default {
   data() {
     return {
+      // Form details to implement 2-way data binding
       firstName: "",
       lastName: "",
       email: "",
@@ -166,9 +167,10 @@ export default {
      * Validate that the firstname consists of more than three characters
      * @param {event.target} e The triggered event target
      * 
-     * @return {string} 
+     * @return {string} The validation error or success message
      */
     validateFirstName(e) {
+      // Disable numeric input
       if(e.keyCode >= 48 && e.keyCode <= 57)
         return e.preventDefault();
 
@@ -182,7 +184,14 @@ export default {
       }
     },
 
+    /**
+     * Validate that the firstname consists of more than three characters
+     * @param {event.target} e The triggered event target
+     * 
+     * @return {string} The validation error or success message
+     */
     validateLastName(e) {
+      // Disable numeric input
       if(e.keyCode >= 48 && e.keyCode <= 57)
         return e.preventDefault();
 
@@ -196,9 +205,16 @@ export default {
       }
     },
 
+    /**
+     * Validate that the email is in its correct format
+     * 
+     * @return {string} The validation error or success message
+     */
     validateEmail() {
       this.emailMssg.error = "";
       this.emailMssg.success = "";
+
+      // Validate with Regex
       let isMatch = this.email.match(
         /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
       );
@@ -210,10 +226,22 @@ export default {
       return this.emailMssg.success = "Email validated"
     },
 
+    /**
+     * Validate that the passord strength is above average
+     * 
+     * @return {string} The validation error or success message
+     */
     validatePassword() {
       this.passwordMssg.error = "";
       this.passwordMssg.success = "";
 
+      /**
+       * validate with regex that the password:
+       * Is greater than 6 words length
+       * Contains at least an alphabet
+       * Contains at least a number
+       * Contains at least a symbol
+       */
       let passwordValid = new RegExp('((?=.*[a-z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{7,}))');
       this.validateConfirmPassword();
 
@@ -223,6 +251,11 @@ export default {
       return this.passwordMssg.error = "Password must be more than 6 words length and must contain at least 1 alphabet, number and symbol";
     },
 
+    /**
+     * Validate that the confirmed password value is exactly same as password value
+     * 
+     * @return {string} The validation error or success message
+     */
     validateConfirmPassword() {
       this.confirmPasswordMssg.error = "";
       this.confirmPasswordMssg.success = "";
@@ -235,6 +268,11 @@ export default {
       }
     },
 
+    /**
+     * Alert data filled in form
+     * 
+     * @return {null}
+     */
     handleSubmit() {
       let data = 'First Name: ' + this.firstName + '\n'+
                   'Last Name: ' + this.lastName + '\n'+
