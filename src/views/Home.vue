@@ -84,6 +84,9 @@ export default {
       password: "",
       confirmPassword: "",
 
+      /**
+       * Every input represents each object with error and success message property
+       */
       firstNameMssg:
       {
         error: "", success: ""
@@ -108,6 +111,11 @@ export default {
   },
 
   computed: {
+
+    /**************************************************
+     * Getters for each field error and success message
+     */
+
     getFirstNameSuccMssg() {
       return this.firstNameMssg.success
     },
@@ -138,12 +146,28 @@ export default {
     getConfirmPasswordErrMssg() {
       return this.confirmPasswordMssg.error
     },
+    /***************************************************
+     * 
+     */
+
+    /**
+     * Determines if the form can get submitted or not.
+     * Checks if any field have a validation error mssg present.
+     * 
+     * @return {int} 0 if error mssg absent or >=1 if present
+     */
     canSubmit() {
       return (this.getConfirmPasswordSuccMssg.length && this.getPasswordSuccMssg.length && this.getEmailSuccMssg.length && this.getLastNameSuccMssg.length && this.getFirstNameSuccMssg.length)
     }
   },
 
   methods: {
+    /**
+     * Validate that the firstname consists of more than three characters
+     * @param {event.target} e The triggered event target
+     * 
+     * @return {string} 
+     */
     validateFirstName(e) {
       if(e.keyCode >= 48 && e.keyCode <= 57)
         return e.preventDefault();
