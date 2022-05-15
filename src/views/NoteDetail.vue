@@ -30,20 +30,19 @@ export default {
     },
 
     methods: {
-    async getNote() {
-      try {
-        const resp = await axios.get('http://localhost:3001/notes/' + this.noteId);
-        this.note = resp.data;
-      }
-      catch(err) {
-        console.log(err);
-      }
+      /**
+       * Populates the note array with data received from HTTP Get api call (JSON Server)
+       */
+      async getNote() {
+        try {
+          const resp = await axios.get('http://localhost:3001/notes/' + this.noteId);
+          this.note = resp.data;
+        }
+        catch(err) {
+          console.log(err);
+        }
+      },
     },
-
-    formatDate(date) {
-      return new Date(date).toLocaleDateString("en-US", this.dateOptions)
-    },
-  },
 
   mounted() {
     this.getNote()

@@ -35,6 +35,9 @@ export default {
   },
 
   computed: {
+    /**
+     * @return {string} the number of notes available [NB the pronoun, note|notes]
+     */
     populatedList() {
       let noun = this.notes.length == 1? "note" : "notes";
       return this.notes.length + " Available " + noun;
@@ -42,6 +45,9 @@ export default {
   },
 
   methods: {
+    /**
+     * Populates the notes array with data received from HTTP Get api call (JSON Server)
+     */
     async getNotes() {
       try {
         const resp = await axios.get(`http://localhost:3001/notes`);
@@ -52,10 +58,21 @@ export default {
       }
     },
 
+    /**
+     * Takes in date string parameter and format based on defined options
+     * @param {string} date The date string to format
+     * 
+     * @return {Date} Formatted Date object
+     */
     formatDate(date) {
       return new Date(date).toLocaleDateString("en-US", this.dateOptions)
     },
 
+    /**
+     * Deletes a note with the HTTP DELETE api call(JSON Server) where the note id is this parameter id.
+     * Filters the notes array to remove deleted note
+     * @param {int} id The note id
+     */
     removeNote(id) {
       axios.delete(`http://localhost:3001/notes/${id}`);
       this.notes = this.notes.filter((item) => item.id !== id);

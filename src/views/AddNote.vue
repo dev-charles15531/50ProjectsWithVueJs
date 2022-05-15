@@ -12,7 +12,7 @@
                         <h6 class="text-white cursor-pointer font-bold text-lg">&times</h6>
                     </div>
                     <form class="mt-5" method="post">
-                        <input class="h-11 w-full font-mono font-semibold font-serif border rounded p-4 focus:outline-green-100" v-model="title" placeholder="Enter note title">
+                        <input class="h-11 w-full font-semibold font-serif border rounded p-4 focus:outline-green-100" v-model="title" placeholder="Enter note title">
                         
                         <textarea class="mt-4 h-40 w-full font-serif border rounded p-4 focus:outline-green-100" v-model="descr" placeholder="Enter note description"></textarea>
                         
@@ -40,6 +40,10 @@ import axios from "axios";
         },
 
         methods: {
+            /**
+             * Add a new note if inputs are validated using the HTTP POST api call(JSN Server)
+             * Set success message on success.
+             */
             async addNote() {
                 clearTimeout(this.timeout);
                 if(this.sanitizeInput(this.title, this.descr) == true) {
@@ -61,6 +65,13 @@ import axios from "axios";
                 }
             },
 
+            /**
+             * Validates that this method parameters are not empty and set error mssg if they are
+             * @param {string} title The note title field value
+             * @param {string} descr The note description field value
+             * 
+             * @return {boolean} True on validation success or False on failure
+             */
             sanitizeInput(title, descr) {
                 let titleLength = title.trim().length;
                 let descrLength = descr.trim().length;
