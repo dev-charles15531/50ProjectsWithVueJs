@@ -62,7 +62,9 @@
             <p class="text-sm text-green-600 pl-1" v-else-if="getConfirmPasswordSuccMssg.length">{{getConfirmPasswordSuccMssg}}</p>
           </div>
 
-          <button :disabled="!(getConfirmPasswordSuccMssg.length && getPasswordSuccMssg.length && getEmailSuccMssg.length && getLastNameSuccMssg.length && getFirstNameSuccMssg.length)" class="mt-4 bg-gradient-to-r from-teal-400 via-green-300 to-teal-500 hover:bg-gradient-to-r hover:from-teal-300 hover:via-green-400 hover:to-teal-400 px-5 py-2 rounded" @click.prevent="addNote">
+          <button :disabled="canSubmit < 1" 
+          class="mt-4 bg-gradient-to-r disabled:from-gray-200 from-teal-400 via-green-300 disabled:to-stone-200 to-teal-500 disabled:cursor-not-allowed hover:bg-gradient-to-r hover:from-teal-300 hover:via-green-400 hover:to-teal-400 px-5 py-2 rounded"
+           @click.prevent="handleSubmit">
               <span class="text-sm font-semibold">Submit</span>
           </button>  
          </form>
@@ -136,6 +138,9 @@ export default {
     getConfirmPasswordErrMssg() {
       return this.confirmPasswordMssg.error
     },
+    canSubmit() {
+      return (this.getConfirmPasswordSuccMssg.length && this.getPasswordSuccMssg.length && this.getEmailSuccMssg.length && this.getLastNameSuccMssg.length && this.getFirstNameSuccMssg.length)
+    }
   },
 
   methods: {
@@ -204,6 +209,15 @@ export default {
       else {
         return this.confirmPasswordMssg.error = "Passwords not matching";
       }
+    },
+
+    handleSubmit() {
+      let data = 'First Name: ' + this.firstName + '\n'+
+                  'Last Name: ' + this.lastName + '\n'+
+                  'Email: ' + this.email + '\n'+
+                  'Password: ' + this.password;
+      
+      alert(data);
     }
   },
 
