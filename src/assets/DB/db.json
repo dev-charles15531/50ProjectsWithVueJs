@@ -1,0 +1,12 @@
+{
+  "users": [
+    {
+      "first_name": "Charles",
+      "last_name": "Paul",
+      "email": "me@email.com",
+      "password": "P@ssw0rd",
+      "logged_in": 1,
+      "id": 1
+    }
+  ]
+}
