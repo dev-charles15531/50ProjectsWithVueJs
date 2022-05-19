@@ -5,7 +5,7 @@
                 <router-link to="/">User Authentication</router-link>
             </div>
 
-            <div v-if="!isLoggedIn" class="flex space-x-3 text-gray-200 font-semibold">
+            <div v-if="isLoggedIn === 0" class="flex space-x-3 text-gray-200 font-semibold">
                 <router-link class="real" to="/login">Login</router-link>
                 <router-link class="real" to="/signup">Sign Up</router-link>
             </div>
@@ -30,10 +30,7 @@ export default {
 
     computed: {
         isLoggedIn() {
-            if(this.userId === 0) 
-                return false;
-            else 
-                return true;
+            return this.userId
         }
     },
 
@@ -72,9 +69,9 @@ export default {
     
     },
 
-  created() {
-    this.getLoggedInUser();
-  },
+    mounted() {
+        this.getLoggedInUser();
+    },
 }
 </script>
 
