@@ -5,7 +5,7 @@
       "last_name": "Paul",
       "email": "me@email.com",
       "password": "P@ssw0rd",
-      "logged_in": 1,
+      "logged_in": 0,
       "id": 1
     }
   ]
