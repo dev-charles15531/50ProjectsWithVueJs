@@ -74,7 +74,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import firebase from "../utilities/firebase";
 
 export default {
   data() {
@@ -275,29 +275,29 @@ export default {
      * 
      * @return {null}
      */
-    async handleSubmit() {
+    handleSubmit() {
       if(this.canSubmit) {
-        const response = await axios.post(`http://localhost:3001/users`, {
-          first_name: this.firstName,
-          last_name: this.lastName,
-          email: this.email,
-          password: this.password,
-          logged_in: 0
-        });
 
-        if(response.status > 200 && response.status < 300)
-          alert('User created successfully')
-        else 
-          alert('Failed to create user')
+        firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
+          .then((userCredential) => {
+            // Signed in 
+            var user = userCredential.user;
+            // ...
+            this.$router.push("/");
+          })
+          .catch((error) => {
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            // ..
+          });
+          // Empty all fields on success or error
+          this.firstName = "";
+          this.lastName = "";
+          this.email = "";
+          this.password = "";
       }
-
-      // Empty all fields on success or error
-      this.firstName = "";
-      this.lastName = "";
-      this.email = "";
-      this.password = "";
-    }
-  },
+    },
+  }
 
 }
 </script>
