@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import {getAuth, signInWithEmailAndPassword} from "firebase/auth";
 export default {
   data() {
     return {
@@ -69,44 +69,29 @@ export default {
      * 
      * @return {null}
      */
-    handleSubmit() {
-      this.getExistingUsers();
-
-      this.existingUsers.forEach(user => {
-        if(user.email === this.email && user.password === this.password) {
-
-          this.setLoginStatus(user.id);
-        }
-        else {
-          alert('Incorrect email or password')
-        }
-      });
-    },
-
-    /**
-     * Get existing users from our fake database
-     * set the response data to the existinUsers array
-     */
-    async getExistingUsers() {
-      const response = await axios.get(`http://localhost:3001/users`);
-
-      this.existingUsers = response.data
-    },
-
-    /**
-     * Set login status for correct login authentication
-     * Redirects to dashboard.
-     */
-    async setLoginStatus(userId) {
-      const response = await axios.patch(`${`http://localhost:3001/users`}/${userId}`, {
-          logged_in: 1,
+    async handleSubmit() {
+      const auth = getAuth()
+      await signInWithEmailAndPassword(auth, this.email, this.password)
+        .then((user) => {
+          this.$router.push('/dashboard')
+        })
+        .catch((error) => {
+          switch(error.code) {
+            case "auth/invalid-email":
+              alert('Invalid email')
+              break;
+            case "auth/user-not-found":
+              alert('No account with that email was found')
+              break;
+            case "auth/wrong-password":
+              alert('Incorrect Password')
+              break;
+            default:
+              alert('Incorrect email or password')
+              break;
+          }
         });
-      if(response.status >= 200 && response.status < 300)
-        this.$router.push('/dashboard')
-      else 
-        alert('Unable to login')
-    }
-  },
-
+    },
+  }
 }
 </script>

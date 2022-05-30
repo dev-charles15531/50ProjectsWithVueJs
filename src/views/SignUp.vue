@@ -74,7 +74,8 @@
 </template>
 
 <script>
-import firebase from "../utilities/firebase";
+//Import the required methods
+import {getAuth, createUserWithEmailAndPassword, updateProfile} from "firebase/auth";
 
 export default {
   data() {
@@ -271,30 +272,34 @@ export default {
 
     /**
      * Register user if all validation passes
-     * save to our local DB using JSON Server
+     * save to firebase
      * 
      * @return {null}
      */
-    handleSubmit() {
+    async handleSubmit() {
       if(this.canSubmit) {
-
-        firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
-          .then((userCredential) => {
-            // Signed in 
-            var user = userCredential.user;
-            // ...
-            this.$router.push("/");
-          })
-          .catch((error) => {
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            // ..
-          });
-          // Empty all fields on success or error
-          this.firstName = "";
-          this.lastName = "";
-          this.email = "";
-          this.password = "";
+        const auth = getAuth();
+        await createUserWithEmailAndPassword(auth, this.email, this.password)
+        .then((userCredential) => {
+          if(userCredential) {
+            this.userCredential = auth.currentUser
+            updateProfile(auth.currentUser, {
+              displayName: this.firstName + ' ' + this.lastName,
+              photoURL: ""
+            })
+          }
+          // Signed in 
+          const user = userCredential.user;
+          // ... Alert on successfull signup
+          alert('User created successfully')
+          this.$router.push('/login')
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          // .. Alert on failed signup
+          alert(errorCode + "\n" + errorMessage)
+        });
       }
     },
   }

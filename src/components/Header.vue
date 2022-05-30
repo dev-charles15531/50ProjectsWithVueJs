@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import {getAuth} from "firebase/auth";
 export default {
     data() {
         return {
@@ -36,19 +36,12 @@ export default {
 
      methods: {
         /**
-         * Get logged in user from our fake database
-         * set the response data to the users object
+         * Get logged in user status from firebase
+         * set userId = 0 if user is not loggedin and 1 if user is logged in
          */
         async getLoggedInUser() {
-            const response = await axios.get(`http://localhost:3001/users`);
-
-            let existingUsers = response.data
-
-            existingUsers.forEach(user => {
-                if(user.logged_in == 1) {
-                this.userId = user.id;
-                }
-            });
+            const auth = getAuth()
+            
         },
 
         /**
@@ -56,15 +49,7 @@ export default {
          * Redirects to login page.
          */
         async logout() {
-            const response = await axios.patch(`${`http://localhost:3001/users`}/${this.userId}`, {
-                logged_in: 0,
-                });
-            if(response.status >= 200 && response.status < 300) {
-                this.userId = 0
-                this.$router.push('/login')
-            }
-            else 
-                alert('Unable to logout')
+            
         },
     
     },
