@@ -7,6 +7,14 @@
       "password": "P@ssw0rd",
       "logged_in": 0,
       "id": 1
+    },
+    {
+      "first_name": "Paul",
+      "last_name": "Uche ",
+      "email": "you@email.com",
+      "password": "P@ssw0rd",
+      "logged_in": 1,
+      "id": 2
     }
   ]
 }

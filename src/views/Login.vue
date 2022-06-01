@@ -36,77 +36,47 @@
   </div>
 </template>
 
-<script>
-import axios from "axios";
-export default {
-  data() {
-    return {
-      // Form details to implement 2-way data binding
-      email: "",
-      password: "",
+<script setup>
+import { ref, computed, onMounted } from 'vue';
+import { userStore } from '../stores/user';
+import { useRouter } from 'vue-router';
 
-      // Existing database users
-      existingUsers: [],
+const myUserStore = userStore()
+
+const email = ref("")
+const password = ref("")
+const router = useRouter()
+
+const canSubmit = computed(() => {
+  return (email.value.length > 0 && password.value.length > 0)
+});
+
+/**
+ * Authenticate form data against data stored in DB
+ * Alert on form authentication
+ * 
+ * @return {null}
+ */
+function handleSubmit() {
+  let users = myUserStore.getExistingUsers
+  const userMatch = users.filter(user => (user.email == email.value  &&  user.password == password.value))
+
+  if(userMatch.length == 0) {
+    alert("Incorrect email or password")
+  }
+  else {
+    myUserStore.setLoginStatus(userMatch[0].id)
+    if(myUserStore.getLoginStatusResponse == true) {
+      router.push('/dashboard')
     }
-  },
-
-  computed: {
-
-    /**
-     * Determines if the form can get submitted or not.
-     * 
-     * @return {boolean} True or False
-     */
-    canSubmit() {
-      return (this.email.length > 0 && this.password.length > 0)
+    else {
+      return alert('Unable to login')
     }
-  },
-
-  methods: {
-    /**
-     * Authenticate form data against data stored in DB
-     * Alert on form authentication
-     * 
-     * @return {null}
-     */
-    handleSubmit() {
-      this.getExistingUsers();
-
-      this.existingUsers.forEach(user => {
-        if(user.email === this.email && user.password === this.password) {
-
-          this.setLoginStatus(user.id);
-        }
-        else {
-          alert('Incorrect email or password')
-        }
-      });
-    },
-
-    /**
-     * Get existing users from our fake database
-     * set the response data to the existinUsers array
-     */
-    async getExistingUsers() {
-      const response = await axios.get(`http://localhost:3001/users`);
-
-      this.existingUsers = response.data
-    },
-
-    /**
-     * Set login status for correct login authentication
-     * Redirects to dashboard.
-     */
-    async setLoginStatus(userId) {
-      const response = await axios.patch(`${`http://localhost:3001/users`}/${userId}`, {
-          logged_in: 1,
-        });
-      if(response.status >= 200 && response.status < 300)
-        this.$router.push('/dashboard')
-      else 
-        alert('Unable to login')
-    }
-  },
-
+  }
 }
+
+onMounted(() => {
+  myUserStore.fetchExistingUsers();
+})
+
 </script>

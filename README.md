@@ -10,5 +10,4 @@ This contains the complete day 7 project(Mini Auth).
 
 ### Note:
 - You must have node and npm installed on your computer to run the above commands. So do well to install them if they're not present.
-- In the Header component, the right menu isn't reactive in the sense that it dosent show the appropriate menu after login or logout until the component is reloaded. This can be fixed with vuex(i know), but i will update this project and commit when i'm done learning vuex.
-- This is the last project i'll develope using the vue 3 options api. From next project, i'll begin building with the composition api :)
+- This is the last project i'll develope using the vue 3 options api (only on some components). From next project, i'll begin building with the composition api :)
