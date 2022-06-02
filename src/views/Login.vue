@@ -36,62 +36,49 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import {getAuth, signInWithEmailAndPassword} from "firebase/auth";
-export default {
-  data() {
-    return {
-      // Form details to implement 2-way data binding
-      email: "",
-      password: "",
+import { ref, computed } from "vue";
+import { useRouter } from "vue-router";
+import {userStore} from "../store/users"
 
-      // Existing database users
-      existingUsers: [],
-    }
-  },
+const myUserStore = userStore()
+const router = useRouter()
 
-  computed: {
+// Form details to implement 2-way data binding
+const email = ref("")
+const password = ref("")
 
-    /**
-     * Determines if the form can get submitted or not.
-     * 
-     * @return {boolean} True or False
-     */
-    canSubmit() {
-      return (this.email.length > 0 && this.password.length > 0)
-    }
-  },
+/**
+ * Determines if the form can get submitted or not.
+ * 
+ * @return {boolean} True or False
+ */
+const canSubmit = computed(() => {
+  return (email.value.length > 0 && password.value.length > 0)
+})
 
-  methods: {
-    /**
-     * Authenticate form data against data stored in DB
-     * Alert on form authentication
-     * 
-     * @return {null}
-     */
-    async handleSubmit() {
-      const auth = getAuth()
-      await signInWithEmailAndPassword(auth, this.email, this.password)
-        .then((user) => {
-          this.$router.push('/dashboard')
-        })
-        .catch((error) => {
-          switch(error.code) {
-            case "auth/invalid-email":
-              alert('Invalid email')
-              break;
-            case "auth/user-not-found":
-              alert('No account with that email was found')
-              break;
-            case "auth/wrong-password":
-              alert('Incorrect Password')
-              break;
-            default:
-              alert('Incorrect email or password')
-              break;
-          }
-        });
-    },
-  }
+/**
+ * Authenticate form data against data stored in firebase
+ * Redirect to dashboard on auth success
+ * Alert error message on auth failure 
+ * 
+ * @return {null}
+ */
+function handleSubmit() {
+  const auth = getAuth()
+  // const currentUser = auth.currentUser
+  signInWithEmailAndPassword(auth, email.value, password.value)
+    .then((user) => {
+      myUserStore.setDisplayName(user.user.displayName)
+      myUserStore.setEmail(user.user.email)
+      myUserStore.setLoggedIn(1)
+
+      router.push('/dashboard')
+    })
+    .catch((error) => {
+        alert('Incorrect email or password')
+    });
 }
+
 </script>

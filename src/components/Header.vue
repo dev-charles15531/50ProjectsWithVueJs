@@ -5,12 +5,12 @@
                 <router-link to="/">User Authentication</router-link>
             </div>
 
-            <div v-if="isLoggedIn === 0" class="flex space-x-3 text-gray-200 font-semibold">
+            <div v-if="! myUserStore.getLoginStatus" class="flex space-x-3 text-gray-200 font-semibold">
                 <router-link class="real" to="/login">Login</router-link>
                 <router-link class="real" to="/signup">Sign Up</router-link>
             </div>
             <div v-else class="flex space-x-3 text-gray-200 font-semibold">
-                <a href="#" @click.prevent="logout">Logout</a>
+                <a href="#" @click.prevent="logOut()">Logout</a>
             </div>
         </nav>
     </div>
@@ -19,45 +19,20 @@
     </div>
 </template>
 
-<script>
-import {getAuth} from "firebase/auth";
-export default {
-    data() {
-        return {
-            userId: 0
-        }
-    },
+<script setup>
+import { ref } from "vue";
+import {userStore} from "../store/users"
+import { useRouter } from "vue-router";
 
-    computed: {
-        isLoggedIn() {
-            return this.userId
-        }
-    },
+const myUserStore = userStore()
+const router = useRouter()
 
-     methods: {
-        /**
-         * Get logged in user status from firebase
-         * set userId = 0 if user is not loggedin and 1 if user is logged in
-         */
-        async getLoggedInUser() {
-            const auth = getAuth()
-            
-        },
+const logOut = () => {
+    myUserStore.logOutUser()
 
-        /**
-         * Logout logged in user
-         * Redirects to login page.
-         */
-        async logout() {
-            
-        },
-    
-    },
-
-    mounted() {
-        this.getLoggedInUser();
-    },
+    router.push('/login')
 }
+
 </script>
 
 <style scoped>

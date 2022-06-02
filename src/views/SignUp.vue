@@ -12,10 +12,10 @@
               <div class="absolute inset-y-0 left-0 px-3 flex items-center pointer-events-none">
                 <span class="text-gray-500 material-icons">account_circle</span>
               </div>
-              <input type="text" v-model="firstName" placeholder="First Name" @keyup="validateFirstName" class="h-11 w-full font-serif border rounded py-4 pl-12 focus:outline-green-100">
+              <input type="text" v-model="messages.firstName" placeholder="First Name" @keyup="validateFirstName" class="h-11 w-full font-serif border rounded py-4 pl-12 focus:outline-green-100">
             </div>
-            <p class="text-sm text-red-600 pl-1" v-if="getFirstNameErrMssg.length">{{getFirstNameErrMssg}}</p>
-            <p class="text-sm text-green-600 pl-1" v-else-if="getFirstNameSuccMssg.length">{{getFirstNameSuccMssg}}</p>
+            <p class="text-sm text-red-600 pl-1" v-if="messages.getFirstNameErrMssg.length">{{messages.getFirstNameErrMssg}}</p>
+            <p class="text-sm text-green-600 pl-1" v-else-if="messages.getFirstNameSuccMssg.length">{{messages.getFirstNameSuccMssg}}</p>
           </div>
 
           <div class="mb-4">
@@ -23,10 +23,10 @@
               <div class="absolute inset-y-0 left-0 px-3 flex items-center pointer-events-none">
                 <span class="text-gray-500 material-icons">account_circle</span>
               </div>
-              <input type="text" v-model="lastName" placeholder="Last Name" @keyup="validateLastName" class="h-11 w-full font-serif border rounded py-4 pl-12 focus:outline-green-100">
+              <input type="text" v-model="messages.lastName" placeholder="Last Name" @keyup="validateLastName" class="h-11 w-full font-serif border rounded py-4 pl-12 focus:outline-green-100">
             </div>
-            <p class="text-sm text-red-600 pl-1" v-if="getLastNameErrMssg.length">{{getLastNameErrMssg}}</p>
-            <p class="text-sm text-green-600 pl-1" v-else-if="getLastNameSuccMssg.length">{{getLastNameSuccMssg}}</p>
+            <p class="text-sm text-red-600 pl-1" v-if="messages.getLastNameErrMssg.length">{{messages.getLastNameErrMssg}}</p>
+            <p class="text-sm text-green-600 pl-1" v-else-if="messages.getLastNameSuccMssg.length">{{messages.getLastNameSuccMssg}}</p>
           </div>
 
           <div class="mb-4">
@@ -34,10 +34,10 @@
               <div class="absolute inset-y-0 left-0 px-3 flex items-center pointer-events-none">
                 <span class="text-gray-500 material-icons">mail </span>
               </div>
-              <input type="email" name="email" v-model="email" placeholder="Email Address" @keyup="validateEmail" class="h-11 w-full font-serif border rounded py-4 pl-12 focus:outline-green-100">
+              <input type="email" name="email" v-model="messages.email" placeholder="Email Address" @keyup="validateEmail" class="h-11 w-full font-serif border rounded py-4 pl-12 focus:outline-green-100">
             </div>
-            <p class="text-sm text-red-600 pl-1" v-if="getEmailErrMssg.length">{{getEmailErrMssg}}</p>
-            <p class="text-sm text-green-600 pl-1" v-else-if="getEmailSuccMssg.length">{{getEmailSuccMssg}}</p>
+            <p class="text-sm text-red-600 pl-1" v-if="messages.getEmailErrMssg.length">{{messages.getEmailErrMssg}}</p>
+            <p class="text-sm text-green-600 pl-1" v-else-if="messages.getEmailSuccMssg.length">{{messages.getEmailSuccMssg}}</p>
           </div>
 
           <div class="mb-4">
@@ -45,10 +45,10 @@
               <div class="absolute inset-y-0 left-0 px-3 flex items-center pointer-events-none">
                 <span class="text-gray-500 material-icons">password</span>
               </div>
-              <input type="password" v-model="password" placeholder="Password" @keyup="validatePassword" class="h-11 w-full font-serif border rounded py-4 pl-12 focus:outline-green-100">
+              <input type="password" v-model="messages.password" placeholder="Password" @keyup="validatePassword" class="h-11 w-full font-serif border rounded py-4 pl-12 focus:outline-green-100">
             </div>
-            <p class="text-sm text-red-600 pl-1" v-if="getPasswordErrMssg.length">{{getPasswordErrMssg}}</p>
-            <p class="text-sm text-green-600 pl-1" v-else-if="getPasswordSuccMssg.length">{{getPasswordSuccMssg}}</p>
+            <p class="text-sm text-red-600 pl-1" v-if="messages.getPasswordErrMssg.length">{{messages.getPasswordErrMssg}}</p>
+            <p class="text-sm text-green-600 pl-1" v-else-if="messages.getPasswordSuccMssg.length">{{messages.getPasswordSuccMssg}}</p>
           </div>
 
           <div class="mb-4">
@@ -56,10 +56,10 @@
               <div class="absolute inset-y-0 left-0 px-3 flex items-center pointer-events-none">
                 <span class="text-gray-500 material-icons">password</span>
               </div>
-              <input type="password" v-model="confirmPassword" placeholder="Confirm Password" @keyup="validateConfirmPassword" class="h-11 w-full font-serif border rounded py-4 pl-12 focus:outline-green-100">
+              <input type="password" v-model="messages.confirmPassword" placeholder="Confirm Password" @keyup="validateConfirmPassword" class="h-11 w-full font-serif border rounded py-4 pl-12 focus:outline-green-100">
             </div>
-            <p class="text-sm text-red-600 pl-1" v-if="getConfirmPasswordErrMssg.length">{{getConfirmPasswordErrMssg}}</p>
-            <p class="text-sm text-green-600 pl-1" v-else-if="getConfirmPasswordSuccMssg.length">{{getConfirmPasswordSuccMssg}}</p>
+            <p class="text-sm text-red-600 pl-1" v-if="messages.getConfirmPasswordErrMssg.length">{{messages.getConfirmPasswordErrMssg}}</p>
+            <p class="text-sm text-green-600 pl-1" v-else-if="messages.getConfirmPasswordSuccMssg.length">{{messages.getConfirmPasswordSuccMssg}}</p>
           </div>
 
           <button :disabled="canSubmit < 1" 
@@ -73,236 +73,229 @@
   </div>
 </template>
 
-<script>
+<script setup>
 //Import the required methods
-import {getAuth, createUserWithEmailAndPassword, updateProfile} from "firebase/auth";
+import {ref, reactive, computed} from 'vue'
+import {getAuth, createUserWithEmailAndPassword, updateProfile} from "firebase/auth"
+import { useRouter } from "vue-router";
 
-export default {
-  data() {
-    return {
-      // Form details to implement 2-way data binding
-      firstName: "",
-      lastName: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
 
-      /**
-       * Every input represents each object with error and success message property
-       */
-      firstNameMssg:
-      {
-        error: "", success: ""
-      },
-      lastNameMssg: 
-      {
-        error: "", success: ""
-      },
-      emailMssg: 
-      {
-        error: "", success: ""
-      },
-      passwordMssg:
-      {
-        error: "", success: ""
-      },
-      confirmPasswordMssg:
-      {
-        error: "", success: ""
-      },
-    }
-  },
+  const router = useRouter()
 
-  computed: {
+// Form details to implement 2-way data binding
+  const firstName = ref("")
+  const lastName = ref("")
+  const email = ref("")
+  const password = ref("")
+  const confirmPassword = ref("")
+
+  
+  const messages = reactive({
+    /**
+     * Every input represents each object with error and success message property
+     */
+    firstNameMssg:
+    {
+      error: "", success: ""
+    },
+    lastNameMssg: 
+    {
+      error: "", success: ""
+    },
+    emailMssg: 
+    {
+      error: "", success: ""
+    },
+    passwordMssg:
+    {
+      error: "", success: ""
+    },
+    confirmPasswordMssg:
+    {
+      error: "", success: ""
+    },
+
 
     /**************************************************
      * Getters for each field error and success message
      */
+    getFirstNameSuccMssg : computed(() => {
+      return messages.firstNameMssg.success
+    }),
+    getFirstNameErrMssg : computed(() => {
+      return messages.firstNameMssg.error
+    }),
+    getLastNameSuccMssg : computed(() => {
+      return messages.lastNameMssg.success
+    }),
+    getLastNameErrMssg : computed(() => {
+      return messages.lastNameMssg.error
+    }),
+    getEmailSuccMssg : computed(() => {
+      return messages.emailMssg.success
+    }),
+    getEmailErrMssg : computed(() => {
+      return messages.emailMssg.error
+    }),
+    getPasswordSuccMssg : computed(() => {
+      return messages.passwordMssg.success
+    }),
+    getPasswordErrMssg : computed(() => {
+      return messages.passwordMssg.error
+    }),
+    getConfirmPasswordSuccMssg : computed(() => {
+      return messages.confirmPasswordMssg.success
+    }),
+    getConfirmPasswordErrMssg : computed(() => {
+      return messages.confirmPasswordMssg.error
+    })
+  })
 
-    getFirstNameSuccMssg() {
-      return this.firstNameMssg.success
-    },
-    getFirstNameErrMssg() {
-      return this.firstNameMssg.error
-    },
-    getLastNameSuccMssg() {
-      return this.lastNameMssg.success
-    },
-    getLastNameErrMssg() {
-      return this.lastNameMssg.error
-    },
-    getEmailSuccMssg() {
-      return this.emailMssg.success
-    },
-    getEmailErrMssg() {
-      return this.emailMssg.error
-    },
-    getPasswordSuccMssg() {
-      return this.passwordMssg.success
-    },
-    getPasswordErrMssg() {
-      return this.passwordMssg.error
-    },
-    getConfirmPasswordSuccMssg() {
-      return this.confirmPasswordMssg.success
-    },
-    getConfirmPasswordErrMssg() {
-      return this.confirmPasswordMssg.error
-    },
-    /***************************************************
-     * 
-     */
+  /**
+   * Determines if the form can get submitted or not.
+   * Checks if any field have a validation error mssg present.
+   * 
+   * @return {int} 0 if error mssg absent or >=1 if present
+   */
+  const canSubmit = computed(() => {
+    return (messages.getConfirmPasswordSuccMssg.length && messages.getPasswordSuccMssg.length && messages.getEmailSuccMssg.length && messages.getLastNameSuccMssg.length && messages.getFirstNameSuccMssg.length)
+  })
 
-    /**
-     * Determines if the form can get submitted or not.
-     * Checks if any field have a validation error mssg present.
-     * 
-     * @return {int} 0 if error mssg absent or >=1 if present
-     */
-    canSubmit() {
-      return (this.getConfirmPasswordSuccMssg.length && this.getPasswordSuccMssg.length && this.getEmailSuccMssg.length && this.getLastNameSuccMssg.length && this.getFirstNameSuccMssg.length)
+  /**
+   * Validate that the firstname consists of more than three characters
+   * @param {event.target} e The triggered event target
+   * 
+   * @return {string} The validation error or success message
+   */
+  function validateFirstName(e) {
+    // Disable numeric input
+    if(e.keyCode >= 48 && e.keyCode <= 57)
+      return e.preventDefault();
+
+    messages.firstNameMssg.error = "";
+    messages.firstNameMssg.success = "";
+    if(messages.firstName.trim().length <= 3) {
+      return messages.firstNameMssg.error = "Your first name must be more than 3 characters"
     }
-  },
-
-  methods: {
-    /**
-     * Validate that the firstname consists of more than three characters
-     * @param {event.target} e The triggered event target
-     * 
-     * @return {string} The validation error or success message
-     */
-    validateFirstName(e) {
-      // Disable numeric input
-      if(e.keyCode >= 48 && e.keyCode <= 57)
-        return e.preventDefault();
-
-      this.firstNameMssg.error = "";
-      this.firstNameMssg.success = "";
-      if(this.firstName.trim().length <= 3) {
-        return this.firstNameMssg.error = "Your first name must be more than 3 characters"
-      }
-      else {
-        return this.firstNameMssg.success = "First name validated"
-      }
-    },
-
-    /**
-     * Validate that the firstname consists of more than three characters
-     * @param {event.target} e The triggered event target
-     * 
-     * @return {string} The validation error or success message
-     */
-    validateLastName(e) {
-      // Disable numeric input
-      if(e.keyCode >= 48 && e.keyCode <= 57)
-        return e.preventDefault();
-
-      this.lastNameMssg.error = "";
-      this.lastNameMssg.success = "";
-      if(this.lastName.trim().length <= 3) {
-        return this.lastNameMssg.error = "Your last name must be more than 3 characters"
-      }
-      else {
-        return this.lastNameMssg.success = "Last name validated"
-      }
-    },
-
-    /**
-     * Validate that the email is in its correct format
-     * 
-     * @return {string} The validation error or success message
-     */
-    validateEmail() {
-      this.emailMssg.error = "";
-      this.emailMssg.success = "";
-
-      // Validate with Regex
-      let isMatch = this.email.match(
-        /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      );
-
-      if(! isMatch) {
-        return this.emailMssg.error = "Email format entered is invalid"
-      }
-
-      return this.emailMssg.success = "Email validated"
-    },
-
-    /**
-     * Validate that the passord strength is above average
-     * 
-     * @return {string} The validation error or success message
-     */
-    validatePassword() {
-      this.passwordMssg.error = "";
-      this.passwordMssg.success = "";
-
-      /**
-       * validate with regex that the password:
-       * Is greater than 6 words length
-       * Contains at least an alphabet
-       * Contains at least a number
-       * Contains at least a symbol
-       */
-      let passwordValid = new RegExp('((?=.*[a-z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{7,}))');
-      this.validateConfirmPassword();
-
-      if(passwordValid.test(this.password)) {
-        return this.passwordMssg.success = "Password validated";
-      }
-      return this.passwordMssg.error = "Password must be more than 6 words length and must contain at least 1 alphabet, number and symbol";
-    },
-
-    /**
-     * Validate that the confirmed password value is exactly same as password value
-     * 
-     * @return {string} The validation error or success message
-     */
-    validateConfirmPassword() {
-      this.confirmPasswordMssg.error = "";
-      this.confirmPasswordMssg.success = "";
-
-      if(this.password === this.confirmPassword) {
-        return this.confirmPasswordMssg.success = "Passwords match";
-      }
-      else {
-        return this.confirmPasswordMssg.error = "Passwords not matching";
-      }
-    },
-
-    /**
-     * Register user if all validation passes
-     * save to firebase
-     * 
-     * @return {null}
-     */
-    async handleSubmit() {
-      if(this.canSubmit) {
-        const auth = getAuth();
-        await createUserWithEmailAndPassword(auth, this.email, this.password)
-        .then((userCredential) => {
-          if(userCredential) {
-            this.userCredential = auth.currentUser
-            updateProfile(auth.currentUser, {
-              displayName: this.firstName + ' ' + this.lastName,
-              photoURL: ""
-            })
-          }
-          // Signed in 
-          const user = userCredential.user;
-          // ... Alert on successfull signup
-          alert('User created successfully')
-          this.$router.push('/login')
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          // .. Alert on failed signup
-          alert(errorCode + "\n" + errorMessage)
-        });
-      }
-    },
+    else {
+      return messages.firstNameMssg.success = "First name validated"
+    }
   }
 
-}
+  /**
+   * Validate that the firstname consists of more than three characters
+   * @param {event.target} e The triggered event target
+   * 
+   * @return {string} The validation error or success message
+   */
+  function validateLastName(e) {
+    // Disable numeric input
+    if(e.keyCode >= 48 && e.keyCode <= 57)
+      return e.preventDefault();
+
+    messages.lastNameMssg.error = "";
+    messages.lastNameMssg.success = "";
+    if(messages.lastName.trim().length <= 3) {
+      return messages.lastNameMssg.error = "Your last name must be more than 3 characters"
+    }
+    else {
+      return messages.lastNameMssg.success = "Last name validated"
+    }
+  }
+
+  /**
+   * Validate that the email is in its correct format
+   * 
+   * @return {string} The validation error or success message
+   */
+  function validateEmail() {
+    messages.emailMssg.error = "";
+    messages.emailMssg.success = "";
+
+    // Validate with Regex
+    let isMatch = messages.email.match(
+      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
+
+    if(! isMatch) {
+      return messages.emailMssg.error = "Email format entered is invalid"
+    }
+
+    return messages.emailMssg.success = "Email validated"
+  }
+
+  /**
+   * Validate that the passord strength is above average
+   * 
+   * @return {string} The validation error or success message
+   */
+  function validatePassword() {
+    messages.passwordMssg.error = "";
+    messages.passwordMssg.success = "";
+
+    /**
+     * validate with regex that the password:
+     * Is greater than 6 words length
+     * Contains at least an alphabet
+     * Contains at least a number
+     * Contains at least a symbol
+     */
+    let passwordValid = new RegExp('((?=.*[a-z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{7,}))');
+    validateConfirmPassword();
+
+    if(passwordValid.test(messages.password)) {
+      return messages.passwordMssg.success = "Password validated";
+    }
+    return messages.passwordMssg.error = "Password must be more than 6 words length and must contain at least 1 alphabet, number and symbol";
+  }
+
+  /**
+   * Validate that the confirmed password value is exactly same as password value
+   *
+   * @return {string} The validation error or success message
+   */
+  function validateConfirmPassword() {
+    messages.confirmPasswordMssg.error = "";
+    messages.confirmPasswordMssg.success = "";
+
+    if(messages.password === messages.confirmPassword) {
+      return messages.confirmPasswordMssg.success = "Passwords match";
+    }
+    else {
+      return messages.confirmPasswordMssg.error = "Passwords not matching";
+    }
+  }
+  
+  /**
+   * Register user if all validation passes
+   * save to firebase
+   * 
+   * @return {null}
+   */
+  async function handleSubmit() {
+    if(canSubmit) {
+      const auth = getAuth();
+      await createUserWithEmailAndPassword(auth, messages.email, messages.password)
+      .then((userCredential) => {
+        if(userCredential) {
+          updateProfile(auth.currentUser, {
+            email: messages.email,
+            displayName: messages.firstName + ' ' + messages.lastName,
+          })
+        }
+        // Signed in 
+        const user = userCredential.user;
+        // ... Alert on successfull signup
+        alert('User created successfully')
+        router.push('/login')
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // .. Alert on failed signup
+        alert(errorCode + "\n" + errorMessage)
+      });
+    }
+  }
+
 </script>
