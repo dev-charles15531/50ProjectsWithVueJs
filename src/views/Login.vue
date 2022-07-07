@@ -66,12 +66,8 @@ function handleSubmit() {
   }
   else {
     myUserStore.setLoginStatus(userMatch[0].id)
-    if(myUserStore.getLoginStatusResponse == true) {
-      router.push('/dashboard')
-    }
-    else {
-      return alert('Unable to login')
-    }
+    router.push('/dashboard')
+    
   }
 }
 

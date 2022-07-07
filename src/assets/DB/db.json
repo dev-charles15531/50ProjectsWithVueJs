@@ -13,8 +13,40 @@
       "last_name": "Uche ",
       "email": "you@email.com",
       "password": "P@ssw0rd",
-      "logged_in": 1,
+      "logged_in": 0,
       "id": 2
+    },
+    {
+      "first_name": "Charlie",
+      "last_name": "Bobo",
+      "email": "them@email.com",
+      "password": "P@ssw0rd",
+      "logged_in": 0,
+      "id": 3
+    },
+    {
+      "first_name": "Just",
+      "last_name": "Testing",
+      "email": "tester@email.com",
+      "password": "P@ssw0rd",
+      "logged_in": 0,
+      "id": 4
+    },
+    {
+      "first_name": "Another ",
+      "last_name": "Test",
+      "email": "test2@email.com",
+      "password": "P@ssw0rd",
+      "logged_in": 0,
+      "id": 5
+    },
+    {
+      "first_name": "",
+      "last_name": "",
+      "email": "",
+      "password": "",
+      "logged_in": 0,
+      "id": 6
     }
   ]
 }
