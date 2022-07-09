@@ -1,4 +1,4 @@
-# 50 Days Of Vue JS
+# 50 Projects s Of Vue JS
 ## Project 5
 
 This contains the complete 5th project(Form Validation).
