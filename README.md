@@ -1,8 +1,8 @@
-# 50 Days Of Vue JS
-## Day 2
+# 50 Projects Of Vue JS
+## Project 2
 
-This contains the complete day 1 project(Testimonial Slider).
-- Clone the repo and switch to the day 1 branch. 
+This contains the complete 2nd project(Testimonial Slider).
+- Clone the repo and switch to the project2 branch. 
 - On your terminal, cd into the projects directory and run the command: ```npm install```
 - After installing all packages, run the command ```npm run dev```
 
