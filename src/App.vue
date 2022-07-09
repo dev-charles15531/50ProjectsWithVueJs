@@ -5,7 +5,10 @@
     >
         <NavHeader dev-name="Dev Charles" />
         
-        <AppCard :greeting=" 'GOOD ' + timeData.string" />
+        <AppCard 
+            :greeting=" 'GOOD ' + timeData.string" 
+            v-bind="colors"
+        />
     </div>
 </template>
 
@@ -16,9 +19,10 @@ import { ref, onMounted } from "vue";
 
 // Hold the day string value
 const timeData = ref({})
+const colors = ref({})
 
 /**
- *  Set day string value from current hour
+ *  Set day string value from current hour and set styling based on time
  * 
  * @return null
  * */ 
@@ -29,28 +33,45 @@ function getTimeString() {
     if (curHr < 12) {
         timeData.value = {
             string: "MORNING",
-            img: "bg-[url('./public/imgs/morning.jpg')]"
+            img: "bg-[url('./imgs/morning.jpg')]"
+        }
+        colors.value = {
+            primary: "bg-gradient-to-br from-slate-200 via-slate-300 to-gray-500",
+            secondary: "text-slate-900",
+            icon: "text-blue-100"
         }
     } 
     else if (curHr < 16) {
         timeData.value = {
             string: "AFTERNOON",
-            img: "bg-[url('./public/imgs/afternoon.jpg')]"
-
+            img: "bg-[url('./imgs/afternoon.jpg')]"
+        }
+        colors.value = {
+            primary: "bg-gradient-to-br from-purple-400 via-green-300 to-indigo-300",
+            secondary: "text-slate-900",
+            icon: "text-orange-200"
         }
     } 
     else if (curHr < 20) {
         timeData.value = {
             string: "EVENING",
-            img: "bg-[url('./public/imgs/evening.jpg')]"
-
+            img: "bg-[url('./imgs/evening.jpg')]"
+        }
+        colors.value = {
+            primary: "bg-gradient-to-br from-orange-400 via-gray-800 to-slate-800",
+            secondary: "text-gray-200",
+            icon: "text-gray-400"
         }
     }
     else {
         timeData.value = {
             string: "NIGHT",
-            img: "bg-[url('./public/imgs/night.jpg')]"
-
+            img: "bg-[url('./imgs/night.jpg')]"
+        }
+        colors.value = {
+            primary: "bg-gradient-to-br from-blue-900 via-black to-zinc-800",
+            secondary: "text-gray-400",
+            icon: "text-blue-200"
         }
     }
 }

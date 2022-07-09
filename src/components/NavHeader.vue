@@ -1,6 +1,6 @@
 <template>
     <div class="-mb-8">
-        <nav class="flex justify-between items-center p-4 bg-gradient-to-tr from-violet-800 via-indigo-800 to-purple-800">
+        <nav class="flex justify-between items-center p-4 bg-gradient-to-tr from-blue-500 via-indigo-400 to-blue-500">
             <div class="font-bold text-white text-lg">
                 Weather App
             </div>
