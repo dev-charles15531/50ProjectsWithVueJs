@@ -1,4 +1,4 @@
-# 50 Days Of Vue JS
+# 50 Projects Of Vue JS
 ## Project 4
 
 This contains the complete 4th project(Note App).
