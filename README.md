@@ -1,8 +1,8 @@
 # 50 Days Of Vue JS
-## Day 8
+## Project 8
 
-This contains the complete day 8 project(Web Calculator).
-- Clone the repo and switch to the day 8 branch. 
+This contains the complete 8th project(Web Calculator).
+- Clone the repo and switch to the project8 branch. 
 - On your terminal, cd into the projects directory and run the command: ```npm install```
 - Run the command ```npm run dev```
 
