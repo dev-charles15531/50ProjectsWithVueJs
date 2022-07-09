@@ -1,7 +1,7 @@
 # 50 Projects Of Vue JS
 ## Project 6
 
-This contains the complete 6th project(Note App).
+This contains the complete 6th project(Color Preview).
 - Install JSON Server on your machine by running the command ```npm install -g json-server```
 - Clone the repo and switch to the project6 branch. 
 - On your terminal, cd into the projects directory and run the command: ```npm install```
