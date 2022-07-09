@@ -1,4 +1,4 @@
-# 50 Days Of Vue JS
+# 50 Projects Of Vue JS
 ## Project 8
 
 This contains the complete 8th project(Web Calculator).
