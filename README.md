@@ -1,5 +1,5 @@
 # 50 Projects Of Vue JS
-## Project 10
+## Project 9
 
 This contains the complete 9th project(Auth More).
 - Clone the repo and switch to the project9 branch. 
