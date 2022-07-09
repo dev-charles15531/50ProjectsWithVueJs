@@ -1,6 +1,6 @@
 <template>
     <div 
-    class="h-screen bg-cover bg-no-repeat space-y-20"
+    class="h-full bg-cover bg-no-repeat space-y-20"
     :class="timeData.img"
     >
         <NavHeader dev-name="Dev Charles" />

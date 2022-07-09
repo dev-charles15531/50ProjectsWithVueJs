@@ -1,6 +1,6 @@
 <template>
     <div class="w-full flex justify-center px-4 pt-10">
-        <div class="w-full md:w-2/5">
+        <div class="w-full h-full md:w-2/5">
             
             <!-- City search box -->
             <SearchInput @use-input="fetchCoordinateFromInput" />
@@ -8,7 +8,7 @@
             <div v-if="error.length" class="mt-24 h-20 flex justify-center items-center text-sm text-white p-4 bg-red-600 rounded-md">
                 <h2 class="text-center">{{error}}</h2>
             </div>
-            <div v-else class="px-4 py-10 rounded-xl w-full mt-24" :class="primary">
+            <div v-else class="px-4 py-10 rounded-xl w-full mt-24 md:mt-14 mb-0 md:mb-5" :class="primary">
                 <div class="w-full">
                     <h4 class="text-center font-bold text-2xl mb-8" :class="secondary">
                         {{greeting}}
@@ -37,8 +37,8 @@
                     </div>
 
                     <div class="flex justify-center mt-4">
-                        <span class="material-icons text-7xl" :class="icon">
-                            sunny
+                        <span class="material-symbols-outlined text-7xl" :class="icon">
+                            {{weatherIcon}}
                         </span>
                     </div>
 
@@ -71,6 +71,7 @@
 import axios from "axios";
 import {ref, reactive, computed, onMounted} from "vue";
 import { useDecodeWeatherVariable } from '../helpers/weather.js';
+import { useIcon } from '../helpers/icongetter.js';
 
 // Components import
 import SearchInput from "./SearchInput.vue"
@@ -102,6 +103,7 @@ const currentUserCityLon = ref("")
 const currentUserCityLat = ref("")
 const weatherData = ref({})
 const error = ref("")
+const weatherIcon = ref("")
 
 
 /**
@@ -148,6 +150,10 @@ async function getUserWeatherData() {
     let weatherCode = weatherData.value.weathercode
     const weatherCodeString = reactive(useDecodeWeatherVariable(weatherCode))
     weatherData.value.weathercode = weatherCodeString.decodedStr
+
+    // Determine icon to be used
+    const icon = reactive(useIcon(weatherData.value.weathercode))
+    weatherIcon.value = icon.decodedStr
 }
 
 </script>
