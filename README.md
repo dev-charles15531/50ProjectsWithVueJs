@@ -1,4 +1,4 @@
-# 50 Days Of Vue JS
+# 50 Projects Of Vue JS
 ## Project 7
 
 This contains the complete 7th project(Mini Auth).
