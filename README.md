@@ -1,9 +1,9 @@
 # 50 Days Of Vue JS
-## Day 7
+## Project 7
 
-This contains the complete day 7 project(Mini Auth).
+This contains the complete 7th project(Mini Auth).
 - Install JSON Server on your machine by running the command ```npm install -g json-server```
-- Clone the repo and switch to the day 7 branch. 
+- Clone the repo and switch to the project7 branch. 
 - On your terminal, cd into the projects directory and run the command: ```npm install```
 - Start the JSON Server on port 3001 by running the command ```json-server --watch src/assets/DB/db.json --port 3001```
 - Run the command ```npm run dev```
