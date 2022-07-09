@@ -1,8 +1,8 @@
-# 50 Days Of Vue JS
-## Day 3
+# 50 Projects Of Vue JS
+## Project 3
 
-This contains the complete day 3 project(The Countdown).
-- Clone the repo and switch to the day 3 branch. 
+This contains the complete 3rd project(The Countdown).
+- Clone the repo and switch to the project3 branch. 
 - On your terminal, cd into the projects directory and run the command: ```npm install```
 - After installing all packages, run the command ```npm run dev```
 
