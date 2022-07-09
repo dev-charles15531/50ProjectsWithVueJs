@@ -1,9 +1,9 @@
 # 50 Days Of Vue JS
-## Day 4
+## Project 4
 
-This contains the complete day 4 project(Note App).
+This contains the complete 4th project(Note App).
 - Install JSON Server on your machine by running the command ```npm install -g json-server```
-- Clone the repo and switch to the day 4 branch. 
+- Clone the repo and switch to the project4 branch. 
 - On your terminal, cd into the projects directory and run the command: ```npm install```
 - Start the JSON Server on port 3001 by running the command ```json-server --watch src/assets/DB/db.json --port 3001```
 - Run the command ```npm run dev```
