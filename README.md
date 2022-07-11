@@ -1,8 +1,8 @@
-# 50 Days Of Vue JS
-## Day 9
+# 50 Projects With Vue JS
+## Project 10
 
-This contains the complete day 9 project(Auth More).
-- Clone the repo and switch to the day 9 branch. 
+This contains the complete 10th project(Weather App).
+- Clone the repo and switch to the project10 branch. 
 - On your terminal, cd into the projects directory and run the command: ```npm install```
 - Run the command ```npm run dev```
 

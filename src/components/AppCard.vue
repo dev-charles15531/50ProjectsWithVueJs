@@ -5,8 +5,8 @@
             <!-- City search box -->
             <SearchInput @use-input="fetchCoordinateFromInput" />
 
-            <div v-if="error.length" class="mt-24 h-20 flex justify-center items-center text-sm text-white p-4 bg-red-600 rounded-md">
-                <h2 class="text-center">{{error}}</h2>
+            <div v-if="store.getMssg.length" class="mt-24 h-20 flex justify-center items-center text-sm text-white p-4 bg-red-600 rounded-md">
+                <h2 class="text-center">{{store.getMssg}}</h2>
             </div>
             <div v-else class="px-4 py-10 rounded-xl w-full mt-24 md:mt-14 mb-0 md:mb-5" :class="primary">
                 <div class="w-full">
@@ -72,6 +72,7 @@ import axios from "axios";
 import {ref, reactive, computed, onMounted} from "vue";
 import { useDecodeWeatherVariable } from '../helpers/weather.js';
 import { useIcon } from '../helpers/icongetter.js';
+import { errorStore } from "../store/errors";
 
 // Components import
 import SearchInput from "./SearchInput.vue"
@@ -97,12 +98,14 @@ const props = defineProps({
 })
 //=================================================================//
 
+// init store
+const store = errorStore()
+
 // declare variable data to use in this component
 const userLocation = ref("")
 const currentUserCityLon = ref("")
 const currentUserCityLat = ref("")
 const weatherData = ref({})
-const error = ref("")
 const weatherIcon = ref("")
 
 
@@ -125,12 +128,15 @@ async function fetchCoordinateFromInput(input) {
             country: resp.data[0].country,
             state: resp.data[0].state
         }
+
+        // Set mssg in store
+        store.setMssg("");
     
         // Get weather data 
         getUserWeatherData()
     }
     catch (e) {
-        error.value = "An unknown or network error occured, Please try again"
+        store.setMssg("An unknown or network error occured, Please try again")
     }
 }
 

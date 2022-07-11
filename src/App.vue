@@ -1,7 +1,7 @@
 <template>
     <div 
-    class="h-full bg-cover bg-no-repeat space-y-20"
-    :class="timeData.img"
+    class="h-full md:h-screen bg-cover bg-no-repeat space-y-20"
+    :class="[timeData.img, (store.getMssg.length)? 'md:h-screen':'md:h-full']"
     >
         <NavHeader dev-name="Dev Charles" />
         
@@ -15,7 +15,11 @@
 <script setup>
 import NavHeader from "./components/NavHeader.vue";
 import AppCard from "./components/AppCard.vue";
-import { ref, onMounted } from "vue";
+import { errorStore } from "./store/errors";
+import { ref, onMounted, computed } from "vue";
+
+// init store
+const store = errorStore()
 
 // Hold the day string value
 const timeData = ref({})
