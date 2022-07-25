@@ -1,6 +1,6 @@
 <template>
     <div class="h-screen w-screen">
-        <div class="w-full h-2/5 bg-blue-200 bg-[url('../public/imgs/pattern-bg.png')]">
+        <div class="w-full h-2/5 bg-blue-200 bg-[url('/imgs/pattern-bg.png')]">
             <!-- header text -->
             <div class="w-full py-5">
                 <h2 class="capitalize font-bold text-lg md:text-xl text-gray-100 text-center">{{ title }}</h2>
@@ -20,8 +20,18 @@
                         </div>
                     </div>
                 </div>
-
             </div>
+
+            <!-- card -->
+            <div class="relative w-full bg-green-500 flex justify-center">
+                <div class="absolute bg-white h-40 w-3/4 top-14 rounded-xl">
+    
+                </div>
+            </div>
+        </div>
+
+        <div id="map" class="w-full h-3/5 bg-blue-200">
+
         </div>
     </div>
 </template>
@@ -30,6 +40,7 @@
 import { ref } from "vue";
 
 const title = ref("ip address tracker")
+
 </script>
 
 <style lang="scss" scoped>
