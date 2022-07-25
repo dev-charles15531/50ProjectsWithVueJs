@@ -13,3 +13,4 @@ It would really be an honor if i get critiques from you guys as this more of a l
 - **[Project 8 - Web Calculator](https://github.com/dev-charles15531/50DaysOfVueJs/tree/project8)**
 - **[Project 9 - Auth More](https://github.com/dev-charles15531/50DaysOfVueJs/tree/project9)**
 - **[Project 10 - Weather App](https://github.com/dev-charles15531/50DaysOfVueJs/tree/project10)**
+- **[Project 10 - IP Address Tracker](https://github.com/dev-charles15531/50DaysOfVueJs/tree/project11)**
