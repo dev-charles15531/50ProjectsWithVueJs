@@ -24,25 +24,88 @@
 
             <!-- card -->
             <div class="relative w-full bg-green-500 flex justify-center">
-                <div class="absolute bg-white h-40 w-3/4 top-14 rounded-xl">
-    
+                <div class="absolute bg-white md:h-40 w-5/6 md:w-3/4 px-5 md:px-10 py-5 md:py-10 top-14 rounded-xl z-20">
+                    <div class="w-full h-full space-y-2 md:space-y-0 md:flex md:justify-evenly md:items-center">
+                        <!-- show ip address -->
+                        <div class="block h-full md:border-r-2 px-10">
+                            <h3 class="uppercase text-xs md:text-sm font-bold text-gray-500">ip address</h3>
+                            <h3 class="text-xl md:text-2xl font-medium text-gray-800">192.168.2.33</h3>
+                        </div>
+
+                        <!-- show location info -->
+                        <div class="block h-full md:border-r-2 px-10">
+                            <h3 class="uppercase text-xs md:text-sm font-bold text-gray-500">location</h3>
+                            <h3 class="text-xl md:text-2xl font-medium text-gray-800">
+                                {{ region }}, {{ country }} {{ postalCode }}
+                            </h3>
+                        </div>
+
+                        <!-- show timezone -->
+                        <div class="block h-full md:border-r-2 px-10">
+                            <h3 class="uppercase text-xs md:text-sm font-bold text-gray-500">timezone</h3>
+                            <h3 class="text-xl md:text-2xl font-medium text-gray-800">
+                                UTC {{ timeZone }}
+                            </h3>
+                        </div>
+
+                        <!-- show the internet service provider -->
+                        <div class="block h-full px-10">
+                            <h3 class="uppercase text-xs md:text-sm font-bold text-gray-500">isp</h3>
+                            <h3 class="text-xl md:text-2xl font-medium text-gray-800">
+                                {{ isp }}
+                            </h3>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div id="map" class="w-full h-3/5 bg-blue-200">
+        <!-- map gets rendered here -->
+        <div id="map" class="w-full h-3/5 z-0"></div>
 
-        </div>
     </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
 
+// imports
+import { onMounted, ref } from "vue";
+import "leaflet/dist/leaflet.css";
+import L from "leaflet";
+
+// app header variable
 const title = ref("ip address tracker")
 
+// location variables
+const country = ref("NG")
+const region = ref("Lagos")
+const postalCode = ref("700231")
+const timeZone = ref("5:00")
+const isp = ref("Google LLC")
+
+// IP address coordinate array [lat, lon]
+const mapCoordinates = ref([9.0820, 8.6753])
+
+const initializeMap = () => {
+    // mount the map on div
+    const map = L.map('map', {
+        center: mapCoordinates.value,
+        zoom: 3
+    })
+
+    // Add map layer from open street map
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        markerLatLng: mapCoordinates.value,
+        attribution: '© OpenStreetMap'
+    }).addTo(map);
+
+    // Add map marker
+    const marker = L.marker(mapCoordinates.value).addTo(map);
+}
+
+onMounted(() => {
+    initializeMap()
+})
+
 </script>
-
-<style lang="scss" scoped>
-
-</style>
