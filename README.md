@@ -1,8 +1,9 @@
 # 50 Projects With Vue JS
-## Project 10
+## Project 11
 
-This contains the complete 10th project(Weather App).
-- Clone the repo and switch to the project10 branch. 
+This contains the complete 11th project(IP Address tracker).
+-This is a solution to the [IP address tracker challenge on Frontend Mentor](https://www.frontendmentor.io/challenges/ip-address-tracker-I8-0yYAH0). Frontend Mentor challenges help you improve your coding skills by building realistic projects. 
+- Clone the repo and switch to the project11 branch. 
 - On your terminal, cd into the projects directory and run the command: ```npm install```
 - Run the command ```npm run dev```
 

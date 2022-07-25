@@ -11,9 +11,9 @@
                 <div class="flex justify-center w-full">
                     <div class="inline-flex justify-center items-center w-full">
                         <div class="w-9/12 md:w-1/4">
-                            <input type="text" placeholder="Search for any IP address or domain" class="w-full h-14 p-5 rounded-l-lg focus:outline-none text-[18px] focus:text-zinc-800 font-medium leading-none">
+                            <input type="text" v-model="ipAddress" placeholder="Search for any IP address or domain" class="w-full h-14 p-5 rounded-l-lg focus:outline-none text-[18px] focus:text-zinc-800 font-medium leading-none">
                         </div>
-                        <div class="w-14 h-14 rounded-r-lg flex justify-center items-center cursor-pointer bg-black hover:bg-zinc-800">
+                        <div @click="getIpAddressInfo()" class="w-14 h-14 rounded-r-lg flex justify-center items-center cursor-pointer bg-black hover:bg-zinc-800">
                             <svg xmlns="http://www.w3.org/2000/svg" width="11" height="14">
                                 <path fill="none" stroke="#FFF" stroke-width="3" d="M2 1l6 6-6 6"/>
                             </svg>
@@ -29,7 +29,7 @@
                         <!-- show ip address -->
                         <div class="block h-full md:border-r-2 px-10">
                             <h3 class="uppercase text-xs md:text-sm font-bold text-gray-500">ip address</h3>
-                            <h3 class="text-xl md:text-2xl font-medium text-gray-800">192.168.2.33</h3>
+                            <h3 class="text-xl md:text-2xl font-medium text-gray-800">{{ ipAddress }}</h3>
                         </div>
 
                         <!-- show location info -->
@@ -70,6 +70,7 @@
 
 // imports
 import { onMounted, ref } from "vue";
+import axios from "axios";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 
@@ -77,20 +78,21 @@ import L from "leaflet";
 const title = ref("ip address tracker")
 
 // location variables
-const country = ref("NG")
-const region = ref("Lagos")
-const postalCode = ref("700231")
-const timeZone = ref("5:00")
-const isp = ref("Google LLC")
+const country = ref("")
+const region = ref("")
+const postalCode = ref("")
+const timeZone = ref("")
+const isp = ref("")
 
-// IP address coordinate array [lat, lon]
-const mapCoordinates = ref([9.0820, 8.6753])
+// IP address and coordinate array [lat, lon]
+const ipAddress = ref("")
+const mapCoordinates = ref([])
 
 const initializeMap = () => {
     // mount the map on div
     const map = L.map('map', {
         center: mapCoordinates.value,
-        zoom: 3
+        zoom: 13
     })
 
     // Add map layer from open street map
@@ -100,12 +102,61 @@ const initializeMap = () => {
         attribution: '© OpenStreetMap'
     }).addTo(map);
 
+    // Add marker icon
+    const myIcon = L.icon({
+        iconUrl: '/imgs/icon-location.svg',
+        iconSize: [20, 30],
+        iconAnchor: [22, 94],
+        popupAnchor: [-3, -76],
+    });
+
     // Add map marker
-    const marker = L.marker(mapCoordinates.value).addTo(map);
+    const marker = L.marker(mapCoordinates.value, {icon: myIcon}).addTo(map);
+}
+
+/**
+ * Get the current ip address
+ */
+const getUserIp = async () => {
+    try {
+        let resp = await axios.get('https://api.ipify.org/?format=json');
+        ipAddress.value = resp.data.ip 
+    }
+    catch (e) {
+        alert("An unknown or network error occured, Please try again")
+    }
+}
+
+/**
+ * Gets details and location data associated with an ip
+ */
+async function getIpAddressInfo() {
+    try {
+        let resp = await axios.get('https://geo.ipify.org/api/v2/country,city?apiKey=at_FthlITyfHsyqcwvTFQdWcw4nKQFc6&ipAddress='+ipAddress.value);
+
+        // Get and set data from api call
+        country.value = resp.data.location.country
+        region.value = resp.data.location.region
+        postalCode.value = resp.data.location.postalCode
+        timeZone.value = resp.data.location.timezone
+        isp.value = resp.data.isp
+        mapCoordinates.value.push(resp.data.location.lat, resp.data.location.lng)
+
+
+        // load map
+        initializeMap()
+    }
+    catch (e) {
+        alert("An unknown or network error occured, Please try again")
+    }
 }
 
 onMounted(() => {
-    initializeMap()
+    // get user ip
+    getUserIp()
+    // get ip details and location
+    // getIpAddressInfo()
+    
 })
 
 </script>
