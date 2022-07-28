@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full bg-[#f5f6fa]">
+    <div class="w-full bg-[#f5f6fa] mt-5">
         <div class="flex flex-col-reverse md:flex-row items-start space-x-0 md:space-x-10 p-3 md:p-5 text-[16px]">
             <!-- display flex with reply icon for small screens downwards -->
             <div class="w-full md:w-auto pt-5 md:pt-0 flex justify-between md:block">
@@ -11,7 +11,7 @@
                         </svg>
                     </div>
                     <!-- vote count -->
-                    <div class="text-[#5457b6] font-medium">13</div>
+                    <div class="text-[#5457b6] font-medium">{{ comment.score }}</div>
                     <!-- downvote icon -->
                     <div class="text-[#67727e] hover:text-[#5457b6] cursor-pointer">
                         <svg width="11" height="3" xmlns="http://www.w3.org/2000/svg">
@@ -35,10 +35,10 @@
             <div class="w-full">
                 <div class="flex justify-between items-center">
                     <div class="flex justify-start items-center space-x-4 text-gray-900">
-                        <img src="/public/avatars/image-amyrobson.png" alt="User Image" class="h-10 w-10">
+                        <img :src="comment.user.image.png" alt="User Image" class="h-10 w-10">
 
                         <div>
-                            <h4 class="font-medium">amyrobson</h4>
+                            <h4 class="font-medium">{{ comment.user.username }}</h4>
                         </div>
                         <div class="text-[#67727e]">
                             <h4 class="font-normal">1 month ago</h4>
@@ -60,7 +60,7 @@
                 <!-- Comment text -->
                 <div class="mt-4 text-[#67727e]">
                     <p class="font-normal">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea sint minus maiores tempore, expedita provident quaerat modi nobis corrupti cumque, delectus deserunt at voluptatem velit eaque iusto sit nam esse?
+                        {{ comment.content }}
                     </p>
                 </div>
             </div>
@@ -68,7 +68,34 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 
+/**
+ * define the currentUser props interface
+ */
+interface userObj {
+    image: {png?: string; webp?: string}
+    username: string
+}
+
+/**
+ * define the comments props interface
+ */
+interface commentObj {
+    id: Number
+    content: string
+    createdAt: string
+    score: Number
+    user: userObj
+    replies: null | []
+}
+
+/**
+ * define props 
+ */
+const props = defineProps<{
+    currentUser: userObj
+    comment: commentObj
+}>()
 
 </script>

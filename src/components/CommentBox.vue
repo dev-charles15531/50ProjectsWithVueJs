@@ -1,9 +1,9 @@
 <template>
-    <div class="w-full bg-[#f5f6fa]">
+    <div class="w-full bg-[#f5f6fa] mt-5">
         <form class="hidden w-full md:flex items-start space-x-10 p-5 text-[16px]">
             <div>
                 <!-- User avatat -->
-                <img src="/public/avatars/image-amyrobson.png" alt="User Image">
+                <img :src="currentUser.image.png" alt="User Image">
             </div>
 
             <div class="w-full">
@@ -26,7 +26,7 @@
             <div class="flex justify-between items-center mt-3">
                 <div>
                     <!-- User avatat -->
-                    <img src="/public/avatars/image-amyrobson.png" alt="User Image">
+                    <img :src="currentUser.image.png" alt="User Image">
                 </div>
     
                 <div>
@@ -38,6 +38,22 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+
+/**
+ * define the props interface
+ */
+interface userObj {
+    image: {png?: string; webp?: string},
+    username?: string
+}
+
+
+/**
+ * define props 
+ */
+const props = defineProps<{
+    currentUser: userObj
+}>()
 
 </script>
