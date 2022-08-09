@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { computed, reactive, ref } from "vue";
+import { computed, ref } from "vue";
 import COMMENTS_API from "../apis/comments";
 
 export const useCommentsStore = defineStore('comments', () => {

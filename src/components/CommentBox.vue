@@ -8,7 +8,7 @@
 
             <div class="w-full">
                 <!-- comment textarea -->
-                <textarea name="comment" id="comment" cols="30" rows="3" placeholder="Add a comment..." class="w-full p-4 rounded-md border-[1px] border-[#eaecf1] focus:border-[#67727e] focus:outline-none text-[#67727e]"></textarea>
+                <textarea v-focus v-model="replyto" name="comment" id="comment" cols="30" rows="3" :placeholder="placeholder" class="w-full p-4 rounded-md border-[1px] border-[#eaecf1] focus:border-[#67727e] focus:outline-none text-[#67727e]"></textarea>
             </div>
 
             <div>
@@ -20,40 +20,38 @@
         <form class="w-full block md:hidden p-5 text-[16px]">
             <div class="w-full">
                 <!-- comment textarea -->
-                <textarea name="comment" id="comment" cols="30" rows="3" placeholder="Add a comment..." class="w-full p-4 rounded-md border-[1px] border-[#eaecf1] focus:border-[#67727e] focus:outline-none text-[#67727e]"></textarea>
+                <textarea v-focus v-model="replyto" name="comment" id="comment" cols="30" rows="3" :placeholder="placeholder" class="w-full p-4 rounded-md border-[1px] border-[#eaecf1] focus:border-[#67727e] focus:outline-none text-[#67727e]"></textarea>
             </div>
 
             <div class="flex justify-between items-center mt-3">
                 <div>
-                    <!-- User avatat -->
-                    <img :src="currentUser.image.png" alt="User Image">
+                    <!-- User avatar -->
+                    <img :src="currentUser.image.png" alt="User Image" class="w-10 h-10">
                 </div>
     
                 <div>
                     <!-- submit button -->
-                    <input type="submit" value="send" class="uppercase cursor-pointer bg-[#5457b6] hover:bg-[#c3c4ef] text-white font-semibold px-8 pt-2 pb-3 rounded-md">
+                    <input type="submit" value="send" class="uppercase cursor-pointer bg-[#5457b6] hover:bg-[#c3c4ef] text-white font-semibold px-6 pt-2 pb-2 rounded-md">
                 </div>
             </div>
         </form>
     </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 
-/**
- * define the props interface
- */
-interface userObj {
-    image: {png?: string; webp?: string},
-    username?: string
-}
-
-
-/**
- * define props 
- */
-const props = defineProps<{
-    currentUser: userObj
-}>()
-
+/****************************************
+ * DEFINE PROPS
+ ***************************************/
+const props = defineProps({
+    currentUser: {
+        type: Object,
+        required: true
+    },
+    placeholder: {
+        type: String,
+        default: "Add a comment..."
+    },
+    replyto: { type: String }
+})
 </script>
