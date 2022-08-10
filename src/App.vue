@@ -19,13 +19,13 @@ import CommentBox from './components/CommentBox.vue';
 const userStore = useUserStore()
 const commentsStore = useCommentsStore()
 
-const comments = ref(commentsStore.getComments)
+const comments = ref(commentsStore.getAllComments)
 
 /**
  * On mounted hook
  */
 onMounted(() => {
     userStore.fetchCurrentUser()
-    commentsStore.fetchComments()
+    commentsStore.fetchAllComments()
 })
 </script>

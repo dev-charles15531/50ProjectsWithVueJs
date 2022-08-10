@@ -90,13 +90,13 @@
 
                         <!-- Timestamp text only visible for medium screens upwards screens -->
                         <div class="text-[#67727e] hidden md:block">
-                            <h4 class="font-normal">{{ comment.createdAt }}</h4>
+                            <h4 class="font-normal">{{ dateCreated }}</h4>
                         </div>
                     </div>
 
                     <!-- Timestamp text only visible for small screens -->
                     <div class="md:hidden text-[#67727e]">
-                        <h4 class="font-normal">{{ comment.createdAt }}</h4>
+                        <h4 class="font-normal">{{ dateCreated }}</h4>
                     </div>
 
                     <!-- ================================================================= -->
@@ -160,7 +160,7 @@
                     <div v-if="isEditBoxShowing" class="w-full">
                         <!-- comment edit textarea -->
                         <div>
-                            <textarea v-focus cols="30" rows="3" class="w-full p-2 md:p-4 rounded-md border-[1px] border-[#eaecf1] focus:border-[#67727e] focus:outline-none text-[#67727e]">{{ (comment.replyingTo)? "@" + comment.replyingTo + " ":"" }}{{ (comment.content) }}</textarea>
+                            <textarea v-focus cols="30" rows="3" class="w-full p-2 md:p-4 rounded-md border-[1px] border-[#eaecf1] focus:border-[#67727e] focus:outline-none text-[#67727e]">{{ (comment.replyingTo)? "@" + comment.replyingTo + ", ":"" }}{{ (comment.content) }}</textarea>
                         </div>
                         <!-- submit button -->
                         <div class="flex justify-end mt-3">
@@ -171,7 +171,7 @@
                     <!-- comment text [show or hide only when the user toggle state by clicking the edit button] -->
                     <p v-if="!isEditBoxShowing" class="font-normal">
                         <span v-if="comment.replyingTo" class="text-[#5457b6] font-semibold">
-                            {{ '@' + comment.replyingTo }}
+                            {{ formattedReplyTo }}
                         </span>
                         {{ comment.content }}
                     </p>
@@ -181,7 +181,7 @@
     </div>
 
     <!-- append reply above other replies or just below comment(if no reply is available) -->
-    <CommentBox v-if="isReplySectionShowing == true" :current-user="currentUser" :placeholder="replyPlaceholder" :replyto="replyTo"/>
+    <CommentBox v-if="isReplySectionShowing == true" :current-user="currentUser" :placeholder="replyPlaceholder" :replyto="formattedReplyTo" @comment-posted="hideReplySection()" />
 
     <!-- If replies are available for this comment, show them below in the same component -->
     <div v-if="comment.replies" class="pl-[20px] md:pl-[40px] ml-0 md:ml-10 border-l-[0.5px] border-l-[#c3c4ef]">
@@ -201,7 +201,8 @@
  * IMPORTS 
  ***************************************/
 import { reactive, ref, } from "vue";
-import CommentBox from "./CommentBox.vue"
+import CommentBox from "./CommentBox.vue";
+import moment from "moment";
 
 /****************************************
  * define props 
@@ -218,16 +219,31 @@ const props = defineProps({
     
 })
 
+// format comment created date
+const dateCreated = ref(moment(props.comment.createdAt, "YYYYMMDD h:mm:ss a").fromNow())
+
 // comment reply textarea placeholder 
 const replyPlaceholder = ref("Add a reply...")
 
 // append the username of the person the current user is replying to
-const replyTo = ref("@" + props.comment.user.username + ", ")
+// this is where we append and prepend the '@' or ',' sign
+const formattedReplyTo = ref("@" + props.comment.user.username + ", ")
 
 // hold the boolean value if the reply box/section is showing or not
 const isReplySectionShowing = ref(false)
+/**
+ * method to hide the reply section
+ */
+const hideReplySection = () => {
+    isReplySectionShowing.value = false
+}
 
 // hold the boolean value if the reply/comment edit box is showing or not
 const isEditBoxShowing = ref(false)
+
+
+const editComment = () => {
+
+}
 
 </script>

@@ -1,6 +1,6 @@
 <template>
     <div class="w-full bg-[#f5f6fa] mt-5">
-        <form class="hidden w-full md:flex items-start space-x-10 p-5 text-[16px]">
+        <form @submit.prevent="submitNewComment()" class="hidden w-full md:flex items-start space-x-10 p-5 text-[16px]">
             <div>
                 <!-- User avatat -->
                 <img :src="currentUser.image.png" alt="User Image">
@@ -8,7 +8,7 @@
 
             <div class="w-full">
                 <!-- comment textarea -->
-                <textarea v-focus v-model="replyto" name="comment" id="comment" cols="30" rows="3" :placeholder="placeholder" class="w-full p-4 rounded-md border-[1px] border-[#eaecf1] focus:border-[#67727e] focus:outline-none text-[#67727e]"></textarea>
+                <textarea v-focus v-model="enteredText" name="comment" id="comment" cols="30" rows="3" :placeholder="placeholder" class="w-full p-4 rounded-md border-[1px] border-[#eaecf1] focus:border-[#67727e] focus:outline-none text-[#67727e]"></textarea>
             </div>
 
             <div>
@@ -17,10 +17,10 @@
             </div>
         </form>
 
-        <form class="w-full block md:hidden p-5 text-[16px]">
+        <form @submit.prevent="submitNewComment()" class="w-full block md:hidden p-5 text-[16px]">
             <div class="w-full">
                 <!-- comment textarea -->
-                <textarea v-focus v-model="replyto" name="comment" id="comment" cols="30" rows="3" :placeholder="placeholder" class="w-full p-4 rounded-md border-[1px] border-[#eaecf1] focus:border-[#67727e] focus:outline-none text-[#67727e]"></textarea>
+                <textarea v-focus v-model="enteredText" name="comment" id="comment" cols="30" rows="3" :placeholder="placeholder" class="w-full p-4 rounded-md border-[1px] border-[#eaecf1] focus:border-[#67727e] focus:outline-none text-[#67727e]"></textarea>
             </div>
 
             <div class="flex justify-between items-center mt-3">
@@ -39,6 +39,13 @@
 </template>
 
 <script setup>
+/**
+ * IMPORTS
+ */
+import { reactive, ref, computed } from "vue";
+import moment from "moment";
+import { useCommentsStore } from "../stores/comments";
+
 
 /****************************************
  * DEFINE PROPS
@@ -54,4 +61,69 @@ const props = defineProps({
     },
     replyto: { type: String }
 })
+
+/****************************************
+ * DEFINE EMITS
+ ***************************************/
+const emits = defineEmits([
+'commentPosted'
+])
+
+
+/**
+ * INITIALIZE STORES
+ */
+const commentsStore = useCommentsStore()
+
+
+
+// Get entered text
+const enteredText = ref("")
+const getEnteredText = computed(() => {
+    return enteredText.value
+})
+
+// Get current date
+let currDate = moment().format('YYYYMMDD');
+
+
+// commentData
+const commentData = reactive({
+    content: getEnteredText,
+    createdAt: currDate,
+    score: 0,
+    user: props.currentUser
+})
+
+// replyData
+const replyData = reactive({
+    content: getEnteredText,
+    createdAt: currDate,
+    score: 0,
+    replyingTo: props.replyto,
+    user: props.currentUser
+})
+
+/**
+ * This method submits new comment/reply
+ */
+const submitNewComment = () => {
+    // check if its a new comment or just a reply
+    // prepare the datails to get saved
+    if(props.replyto == "") {
+        commentsStore.setNewData(commentData)
+
+        // save the comment
+        commentsStore.postNewComments()
+    }
+    else {
+        commentsStore.setNewData(replyData)
+
+        // save the comment
+        commentsStore.postNewComments()
+    }
+
+    // emit comment posted event
+    emits('commentPosted')
+}
 </script>
