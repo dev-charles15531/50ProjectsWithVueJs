@@ -65,9 +65,10 @@
       ]
     },
     {
-      "content": "A new comment",
-      "createdAt": "20220809 5:22:22 pm",
+      "content": "You're very correct bro!",
+      "createdAt": "20220813 4:03:42 am",
       "score": 0,
+      "replyingTo": "ramsesmiron",
       "user": {
         "image": {
           "png": "./avatars/image-juliusomo.png",
