@@ -317,13 +317,13 @@
 
   <!-- If replies are available for this comment, show them below in the same component -->
   <div
-    v-if="comment.replies"
+    v-if="typeof comment.replies !== 'undefined'"
     class="pl-[20px] lg:pl-[40px] ml-0 lg:ml-10 border-l-[0.5px] border-l-[#c3c4ef]"
   >
     <!-- Recursion of current component -->
     <CommentBlock
-      v-if="comment.replies.length"
       v-for="reply in comment.replies"
+      :parent-comment-id="comment.id"
       :comment="reply"
       :current-user="currentUser"
     />
@@ -334,7 +334,7 @@
 /****************************************
  * IMPORTS
  ***************************************/
-import { computed, ref } from "vue";
+import { computed, ref, provide } from "vue";
 import CommentBox from "./CommentBox.vue";
 import moment from "moment";
 
@@ -350,7 +350,13 @@ const props = defineProps({
     type: Object,
     required: true,
   },
+  parentCommentId: {
+    type: Number,
+  },
 });
+
+// provide the parent comment id to be accessible in all nested components
+provide("parent-comment-id", props.parentCommentId);
 
 // format comment created date
 const dateCreated = ref(

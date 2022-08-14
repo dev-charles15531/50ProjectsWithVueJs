@@ -76,7 +76,7 @@
 /**
  * IMPORTS
  */
-import { reactive, ref, computed, watch } from "vue";
+import { reactive, ref, computed, watch, inject } from "vue";
 import moment from "moment";
 import { useCommentsStore } from "../stores/comments";
 
@@ -93,12 +93,16 @@ const props = defineProps({
     default: "Add a comment...",
   },
   replyto: { type: String },
+  commentId: { type: Number },
 });
 
 /****************************************
  * DEFINE EMITS
  ***************************************/
 const emits = defineEmits(["commentPosted"]);
+
+// inhect parent comment id
+const parentCommentId = inject("parent-comment-id", "");
 
 /**
  * INITIALIZE STORES
@@ -130,6 +134,7 @@ const commentData = reactive({
 
 // replyData
 const replyData = reactive({
+  commentId: parentCommentId,
   content: "",
   createdAt: currDate,
   score: 0,
@@ -153,7 +158,7 @@ const submitNewComment = () => {
 
     commentsStore.setNewData(commentData);
     // save the comment
-    commentsStore.postNewComments();
+    commentsStore.postNewComment();
   } else {
     // first check if reply is empty
     if (replyData.content.trim().length == 0)
@@ -164,7 +169,7 @@ const submitNewComment = () => {
 
     commentsStore.setNewData(replyData);
     // save the reply
-    commentsStore.postNewComments();
+    commentsStore.postNewReply();
   }
 
   // emit comment posted event
