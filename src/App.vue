@@ -10,6 +10,10 @@
       <CommentBox :current-user="userStore.getCurrentUser" />
     </div>
   </div>
+
+  <Teleport to="body">
+    <Modal />
+  </Teleport>
 </template>
 
 <script setup>
@@ -19,6 +23,7 @@ import { useUserStore } from "./stores/users";
 import { useCommentsStore } from "./stores/comments";
 import CommentBlock from "./components/CommentBlock.vue";
 import CommentBox from "./components/CommentBox.vue";
+import Modal from "./components/Modal.vue";
 
 // Initialize stores
 const userStore = useUserStore();

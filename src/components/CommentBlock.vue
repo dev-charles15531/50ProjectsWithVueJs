@@ -278,15 +278,16 @@
                 cols="30"
                 rows="3"
                 class="w-full p-2 lg:p-4 rounded-md border-[1px] border-[#eaecf1] focus:border-[#67727e] focus:outline-none text-[#67727e]"
-                >{{ blockFormattedReplyTo }}{{ comment.content }}</textarea
-              >
+                v-model="editContent"
+              ></textarea>
             </div>
-            <!-- submit button -->
+            <!-- submit edited text button -->
             <div class="flex justify-end mt-3">
               <input
                 type="submit"
                 value="update"
                 class="uppercase cursor-pointer bg-[#5457b6] hover:bg-[#c3c4ef] text-white font-semibold px-4 pt-3 pb-3 rounded-md"
+                @click.prevent="handleEditSubmit"
               />
             </div>
           </div>
@@ -336,6 +337,7 @@
  ***************************************/
 import { computed, ref, provide } from "vue";
 import CommentBox from "./CommentBox.vue";
+import { useCommentsStore } from "../stores/comments";
 import moment from "moment";
 
 /****************************************
@@ -354,6 +356,10 @@ const props = defineProps({
     type: Number,
   },
 });
+
+// Initialize stores -----------------------------------------//
+const commentsStore = useCommentsStore();
+//------------------------------------------------------------//
 
 // provide the parent comment id to be accessible in all nested components
 provide("parent-comment-id", props.parentCommentId);
@@ -398,6 +404,77 @@ const hideReplySection = () => {
 
 // hold the boolean value if the reply/comment edit box is showing or not
 const isEditBoxShowing = ref(false);
+/**
+ * method to hide the edit box
+ */
+const hideEditBox = () => {
+  isEditBoxShowing.value = false;
+};
 
-const editComment = () => {};
+// The comment/reply content to edit
+const editContent = ref(blockFormattedReplyTo.value + props.comment.content);
+
+/**
+ * This method handles submission of comment/reply edit
+ */
+const handleEditSubmit = async () => {
+  // remove prepended username reference
+  editContent.value = editContent.value.replace(
+    blockFormattedReplyTo.value,
+    ""
+  );
+
+  // Comment id to edit
+  let commentId;
+  // Comment data to edit
+  let commentData;
+
+  // check if its a comment or a reply
+  if (props.comment.hasOwnProperty("replyingTo")) {
+    //---> its a reply <---//
+
+    // get the reply id
+    let replyId = props.comment.id;
+
+    // get the comment whose reply we want to edit
+    let commentToEditReply = await commentsStore.fetchSingleComment(
+      props.parentCommentId
+    );
+    // get all replies of the above comment
+    let allReplies = commentToEditReply.replies;
+
+    // Find index of the specific reply to edit
+    // edit the content at that index
+    let replyIndex = allReplies.findIndex((reply) => reply.id == replyId);
+    allReplies[replyIndex].content = editContent.value;
+
+    // reassign the replies
+    commentToEditReply.replies = allReplies;
+
+    // assign comment id and data
+    commentId = props.parentCommentId;
+    commentData = commentToEditReply;
+  } else {
+    //---> its a comment <---//
+
+    let editedData = props.comment;
+    editedData.content = editContent.value;
+
+    // assign comment id and data
+    commentId = editedData.id;
+    commentData = editedData;
+  }
+
+  // Edit the comment
+  editComment(commentId, commentData);
+};
+
+/**
+ * method for updating/editing an already posted comment
+ * @param {int} id The comment id to edit
+ * @param {object} data the new comment object
+ */
+const editComment = (id, data) => {
+  commentsStore.updateComment(id, data).finally(hideEditBox());
+};
 </script>

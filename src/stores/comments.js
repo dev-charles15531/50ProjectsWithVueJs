@@ -70,8 +70,9 @@ export const useCommentsStore = defineStore('comments', () => {
      * @param {object} data The new comment object
      */
     const updateComment = async (id, data) => {
+        id = parseInt(id)
         try {
-            COMMENTS_API.put("/"+id, data);
+            await COMMENTS_API.put("/"+id, data);
 
             // refresh all comments
             fetchAllComments()
@@ -131,5 +132,5 @@ export const useCommentsStore = defineStore('comments', () => {
         updateComment(idOfCommentToReplyOn, commentToReplyOn)
     }
 
-    return {fetchAllComments, getAllComments, setNewData, postNewComment, postNewReply}
+    return {fetchAllComments, fetchSingleComment, getAllComments, setNewData, postNewComment, postNewReply, updateComment}
 })

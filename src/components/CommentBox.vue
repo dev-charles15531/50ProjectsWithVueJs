@@ -103,7 +103,7 @@ const props = defineProps({
  ***************************************/
 const emits = defineEmits(["commentPosted"]);
 
-// inhect parent comment id
+// inject parent comment id
 const parentCommentId = inject("parent-comment-id", "");
 
 /**
