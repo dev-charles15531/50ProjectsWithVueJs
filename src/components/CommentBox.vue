@@ -1,5 +1,6 @@
 <template>
   <div class="w-full bg-[#f5f6fa] mt-5">
+    <!-- VISIBLE FOR ONLY MEDIUM SCREENS UPWARDS -->
     <form
       @submit.prevent="submitNewComment()"
       class="hidden w-full md:flex items-start space-x-10 p-5 text-[16px]"
@@ -32,6 +33,7 @@
       </div>
     </form>
 
+    <!-- VISIBLE FOR SMALL SCREENS ONLY -->
     <form
       @submit.prevent="submitNewComment()"
       class="w-full block md:hidden p-5 text-[16px]"
@@ -109,9 +111,6 @@ const parentCommentId = inject("parent-comment-id", "");
  */
 const commentsStore = useCommentsStore();
 
-// Get current date
-let currDate = moment().format("YYYYMMDD h:mm:ss a");
-
 // get the username of the person the current user replied to(if it actully is a reply)
 const replyingTo = computed(() => {
   if (props.replyto === undefined) return "";
@@ -127,7 +126,7 @@ watch(enteredText, (newEnteredText) => {
 // commentData
 const commentData = reactive({
   content: "",
-  createdAt: currDate,
+  createdAt: "",
   score: 0,
   user: props.currentUser,
 });
@@ -136,7 +135,7 @@ const commentData = reactive({
 const replyData = reactive({
   commentId: parentCommentId,
   content: "",
-  createdAt: currDate,
+  createdAt: "",
   score: 0,
   replyingTo: replyingTo.value.slice(1, -2),
   user: props.currentUser,
@@ -155,10 +154,15 @@ const submitNewComment = () => {
 
     // remove the appended username from the comment
     commentData.content = commentData.content.replace(replyingTo.value, "");
+    // use the current time as createdAt field
+    commentData.createdAt = moment().format("YYYYMMDD h:mm:ss a");
 
     commentsStore.setNewData(commentData);
     // save the comment
     commentsStore.postNewComment();
+
+    // Empty the comment box
+    enteredText.value = replyingTo.value;
   } else {
     // first check if reply is empty
     if (replyData.content.trim().length == 0)
@@ -166,6 +170,8 @@ const submitNewComment = () => {
 
     // remove the appended username from the reply
     replyData.content = replyData.content.replace(replyingTo.value, "");
+    // use the current time as createdAt field
+    replyData.createdAt = moment().format("YYYYMMDD h:mm:ss a");
 
     commentsStore.setNewData(replyData);
     // save the reply

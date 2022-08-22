@@ -19,22 +19,7 @@
         },
         "username": "amyrobson"
       },
-      "replies": [
-        {
-          "content": "s",
-          "createdAt": "20220814 10:56:14 pm",
-          "score": 0,
-          "replyingTo": "amyrobson",
-          "user": {
-            "image": {
-              "png": "./avatars/image-juliusomo.png",
-              "webp": "./avatars/image-juliusomo.webp"
-            },
-            "username": "juliusomo"
-          },
-          "id": 1
-        }
-      ]
+      "replies": []
     },
     {
       "id": 2,
@@ -78,33 +63,6 @@
           }
         }
       ]
-    },
-    {
-      "content": "You're very correct bro!",
-      "createdAt": "20220813 4:03:42 am",
-      "score": 0,
-      "replyingTo": "ramsesmiron",
-      "user": {
-        "image": {
-          "png": "./avatars/image-juliusomo.png",
-          "webp": "./avatars/image-juliusomo.webp"
-        },
-        "username": "juliusomo"
-      },
-      "id": 3
-    },
-    {
-      "content": "New comment\n",
-      "createdAt": "20220814 1:07:07 pm",
-      "score": 0,
-      "user": {
-        "image": {
-          "png": "./avatars/image-juliusomo.png",
-          "webp": "./avatars/image-juliusomo.webp"
-        },
-        "username": "juliusomo"
-      },
-      "id": 4
     }
   ]
 }

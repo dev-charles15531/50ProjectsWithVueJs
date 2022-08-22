@@ -5,8 +5,16 @@ import COMMENTS_API from "../apis/comments";
 export const useCommentsStore = defineStore('comments', () => {
     // All comments
     const allComments = ref([])
+
+
     // New comment/reply data to add or update 
     const newData = ref({})
+    /**
+     * Sets a new comment/reply to be posted or edited
+     */
+     const setNewData = (comment) => {
+        newData.value = comment
+    }
 
 
     /**
@@ -27,6 +35,10 @@ export const useCommentsStore = defineStore('comments', () => {
         try {
             const response = await COMMENTS_API.get();
 
+            // first empty the allComments variable to avoid duplicates
+            allComments.value = []
+
+            // populate the allComments variable
             response.data.forEach((comment) => {
                 allComments.value.push(comment);
             });
@@ -52,13 +64,17 @@ export const useCommentsStore = defineStore('comments', () => {
         }
     }
 
+    /**
+     * Update a comment in the mock DB
+     * @param {int} id The id of comment to update
+     * @param {object} data The new comment object
+     */
     const updateComment = async (id, data) => {
         try {
             COMMENTS_API.put("/"+id, data);
 
-            //Find index of specific object using findIndex method.    
-            let objIndex = allComments.value.findIndex((obj => obj.id == id));
-            allComments.value[objIndex].replies.push(data)
+            // refresh all comments
+            fetchAllComments()
 
             // empty the newData object
             newData.value = {}
@@ -68,12 +84,7 @@ export const useCommentsStore = defineStore('comments', () => {
         }
     }
 
-    /**
-     * Sets a new comment/reply to be posted or edited
-     */
-    const setNewData = (comment) => {
-        newData.value = comment
-    }
+    
 
     /**
      * Posts new comment to mock db
@@ -82,8 +93,8 @@ export const useCommentsStore = defineStore('comments', () => {
         try {
             COMMENTS_API.post("/", newData.value);
 
-            // add new comment to allComments array
-            allComments.value.push(newData.value);
+            // refresh all comments
+            fetchAllComments()
 
             // empty the newData object
             newData.value = {}
@@ -102,6 +113,7 @@ export const useCommentsStore = defineStore('comments', () => {
         // get the comment to reply on
         const commentToReplyOn = await fetchSingleComment(idOfCommentToReplyOn)
 
+        // Assign reply id (1 if its a new reply or Previous reply id + 1 if not)
         if(commentToReplyOn.replies.length >= 1) {
             let repliesLength = commentToReplyOn.replies.length
             let lastReply = commentToReplyOn.replies[repliesLength - 1]
