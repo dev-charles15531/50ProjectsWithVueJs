@@ -91,6 +91,19 @@
         "username": "juliusomo"
       },
       "id": 3
+    },
+    {
+      "content": "jjj",
+      "createdAt": "20220822 10:55:58 pm",
+      "score": 0,
+      "user": {
+        "image": {
+          "png": "./avatars/image-juliusomo.png",
+          "webp": "./avatars/image-juliusomo.webp"
+        },
+        "username": "juliusomo"
+      },
+      "id": 4
     }
   ]
 }

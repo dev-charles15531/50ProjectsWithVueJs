@@ -40,6 +40,7 @@
           >
             <div
               class="flex space-x-1 items-center cursor-pointer text-[#ed6468] hover:text-[#ffb8bb]"
+              @click="handleDelete"
             >
               <div>
                 <svg width="13" height="13" xmlns="http://www.w3.org/2000/svg">
@@ -173,6 +174,7 @@
             >
               <div
                 class="flex space-x-1 items-center cursor-pointer text-[#ed6468] hover:text-[#ffb8bb]"
+                @click="handleDelete"
               >
                 <div>
                   <svg
@@ -327,8 +329,13 @@
       :parent-comment-id="comment.id"
       :comment="reply"
       :current-user="currentUser"
+      @show-modal="openModal"
     />
   </div>
+
+  <Teleport to="body">
+    <Modal v-if="isModalOpen" @hide-modal="hideModal" />
+  </Teleport>
 </template>
 
 <script setup>
@@ -337,8 +344,10 @@
  ***************************************/
 import { computed, ref, provide } from "vue";
 import CommentBox from "./CommentBox.vue";
+import Modal from "./Modal.vue";
 import { useCommentsStore } from "../stores/comments";
 import moment from "moment";
+import { useModal } from "../composables/modal";
 
 /****************************************
  * define props
@@ -360,6 +369,11 @@ const props = defineProps({
 // Initialize stores -----------------------------------------//
 const commentsStore = useCommentsStore();
 //------------------------------------------------------------//
+
+/****************************************
+ * DEFINE EMITS
+ ***************************************/
+const emit = defineEmits(["showModal"]);
 
 // provide the parent comment id to be accessible in all nested components
 provide("parent-comment-id", props.parentCommentId);
@@ -476,5 +490,16 @@ const handleEditSubmit = async () => {
  */
 const editComment = (id, data) => {
   commentsStore.updateComment(id, data).finally(hideEditBox());
+};
+
+// modal states and funcs
+const { isModalOpen, openModal, hideModal } = useModal();
+
+/**
+ * when delete button is clicked, show the modal
+ */
+const handleDelete = () => {
+  // emit show modal event
+  emit("showModal");
 };
 </script>
