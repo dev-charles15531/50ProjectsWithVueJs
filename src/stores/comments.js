@@ -3,6 +3,9 @@ import { computed, ref } from "vue";
 import COMMENTS_API from "../apis/comments";
 
 export const useCommentsStore = defineStore("comments", () => {
+  // error mssg
+  const errorMssg = ref("");
+
   // All comments
   const allComments = ref([]);
 
@@ -29,7 +32,10 @@ export const useCommentsStore = defineStore("comments", () => {
    */
   const getAllComments = computed(() => {
     // first fetch all the comments from our mock db
-    fetchAllComments();
+    fetchAllComments().catch(() => {
+      errorMssg.value =
+        "We were unable to fetch comments. This might be due to a network error. \n Please try again later.";
+    });
 
     // return all that was fetched
     return allComments;
@@ -39,19 +45,15 @@ export const useCommentsStore = defineStore("comments", () => {
    * Fetch all coments from our mock db
    */
   const fetchAllComments = async () => {
-    try {
-      const response = await COMMENTS_API.get();
+    const response = await COMMENTS_API.get();
 
-      // first empty the allComments variable to avoid duplicates
-      allComments.value = [];
+    // first empty the allComments variable to avoid duplicates
+    allComments.value = [];
 
-      // populate the allComments variable
-      response.data.forEach((comment) => {
-        allComments.value.push(comment);
-      });
-    } catch (error) {
-      console.error(error);
-    }
+    // populate the allComments variable
+    response.data.forEach((comment) => {
+      allComments.value.push(comment);
+    });
   };
 
   /**
@@ -197,5 +199,6 @@ export const useCommentsStore = defineStore("comments", () => {
     postNewReply,
     updateComment,
     processCommentDelete,
+    errorMssg,
   };
 });

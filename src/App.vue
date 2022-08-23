@@ -1,6 +1,6 @@
 <template>
-  <div class="h-full w-full">
-    <div class="w-full px-1 md:px-44 py-20">
+  <div class="h-full w-full" v-if="!commentsStore.errorMssg">
+    <div class="w-full px-1 md:px-44 py-20" v-if="comments.length">
       <CommentBlock
         v-for="comment in comments"
         :parent-comment-id="comment.id"
@@ -9,6 +9,39 @@
         @show-modal="processOpenModal(comment.id)"
       />
       <CommentBox :current-user="userStore.getCurrentUser" />
+    </div>
+    <div
+      class="w-full h-screen flex justify-center items-center font-medium text-gray-800"
+      v-else
+    >
+      Loading comments...
+    </div>
+  </div>
+  <div class="w-full h-screen flex justify-center items-center p-5" v-else>
+    <div
+      class="flex justify-center items-center h-48 w-full md:w-1/3 rounded-md bg-red-500 p-5"
+    >
+      <div class="text-sm font-medium text-white">
+        <div align="center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+        </div>
+        <p class="mt-3">
+          {{ commentsStore.errorMssg }}
+        </p>
+      </div>
     </div>
   </div>
 
@@ -54,3 +87,9 @@ onMounted(() => {
   userStore.fetchCurrentUser();
 });
 </script>
+
+<style scoped>
+[v-cloak] {
+  display: none;
+}
+</style>
