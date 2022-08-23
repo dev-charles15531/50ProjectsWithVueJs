@@ -33,6 +33,7 @@
 
               <div
                 class="px-6 py-2 bg-[#ed6468] hover:bg-[#ffb8bb] text-base text-white rounded-lg font-medium cursor-pointer"
+                @click="deleteComment"
               >
                 YES, DELETE
               </div>
@@ -45,12 +46,29 @@
 </template>
 
 <script setup>
+import { useCommentsStore } from "../stores/comments";
+
+// Initialize stores
+const commentsStore = useCommentsStore();
+
 /****************************************
  * DEFINE EMITS
  ***************************************/
 const emits = defineEmits(["hideModal"]);
 
+// process comment deletion
+const deleteComment = () => {
+  commentsStore.processCommentDelete();
+
+  // emit hide event
+  hide();
+};
+
+// hides this modal component
 const hide = () => {
+  // clear data to delete set in store
+  commentsStore.setToDeleteData({});
+
   // emit hide modal evt
   emits("hideModal");
 };

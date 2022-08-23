@@ -329,12 +329,12 @@
       :parent-comment-id="comment.id"
       :comment="reply"
       :current-user="currentUser"
-      @show-modal="openModal"
+      @show-modal="processOpenModal(reply.id)"
     />
   </div>
 
   <Teleport to="body">
-    <Modal v-if="isModalOpen" @hide-modal="hideModal" />
+    <Modal v-if="isModalOpen" @hide-modal="closeModal" />
   </Teleport>
 </template>
 
@@ -493,7 +493,7 @@ const editComment = (id, data) => {
 };
 
 // modal states and funcs
-const { isModalOpen, openModal, hideModal } = useModal();
+const { isModalOpen, openModal, closeModal } = useModal();
 
 /**
  * when delete button is clicked, show the modal
@@ -501,5 +501,17 @@ const { isModalOpen, openModal, hideModal } = useModal();
 const handleDelete = () => {
   // emit show modal event
   emit("showModal");
+};
+
+const processOpenModal = (id) => {
+  // populate data to use during delete
+  let data = {
+    parentCommentId: props.parentCommentId,
+    commentId: id,
+  };
+  commentsStore.setToDeleteData(data);
+
+  // open modal
+  openModal();
 };
 </script>

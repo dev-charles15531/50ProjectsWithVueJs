@@ -12,10 +12,10 @@ export function useModal() {
     /**
      * method to hide the modal
      */
-    const hideModal = () => {
+    const closeModal = () => {
     isModalOpen.value = false;
     };
 
   // expose managed state as return value
-  return { isModalOpen, openModal, hideModal }
+  return { isModalOpen, openModal, closeModal }
 }

@@ -6,14 +6,14 @@
         :parent-comment-id="comment.id"
         :comment="comment"
         :current-user="userStore.getCurrentUser"
-        @show-modal="openModal"
+        @show-modal="processOpenModal(comment.id)"
       />
       <CommentBox :current-user="userStore.getCurrentUser" />
     </div>
   </div>
 
   <Teleport to="body">
-    <Modal v-if="isModalOpen" @hide-modal="hideModal" />
+    <Modal v-if="isModalOpen" @hide-modal="closeModal" />
   </Teleport>
 </template>
 
@@ -34,23 +34,18 @@ const commentsStore = useCommentsStore();
 const comments = ref(commentsStore.getAllComments);
 
 // modal states and funcs
-const { isModalOpen, openModal, hideModal } = useModal();
+const { isModalOpen, openModal, closeModal } = useModal();
 
-// // modal state
-// const isModalOpen = ref(false);
-// /**
-//  * method to show the modal
-//  */
-// const openModal = () => {
-//   console.log("delete clicked");
-//   isModalOpen.value = true;
-// };
-// /**
-//  * method to hide the modal
-//  */
-// const hideModal = () => {
-//   isModalOpen.value = false;
-// };
+const processOpenModal = (id) => {
+  // populate data to use during delete
+  let data = {
+    commentId: id,
+  };
+  commentsStore.setToDeleteData(data);
+
+  // open modal
+  openModal();
+};
 
 /**
  * On mounted hook
