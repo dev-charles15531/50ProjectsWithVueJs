@@ -2,23 +2,23 @@
   <!-- render this div if there are no errors fetching all comments -->
   <div class="h-full w-full" v-if="!commentsStore.errorMssg">
     <!-- comments loaded -->
-    <div class="w-full px-1 md:px-44 py-20" v-if="comments.length">
+    <div class="w-full px-1 md:px-44 py-20">
       <CommentBlock
         v-for="comment in comments"
         :parent-comment-id="comment.id"
         :comment="comment"
         :current-user="userStore.getCurrentUser"
+        v-if="comments.length"
         @show-modal="processOpenModal(comment.id)"
       />
+      <!-- comments loading -->
+      <div
+        class="w-full h-screen flex justify-center items-center font-medium text-gray-800"
+        v-else
+      >
+        {{ pageInfo }}
+      </div>
       <CommentBox :current-user="userStore.getCurrentUser" />
-    </div>
-
-    <!-- comments loading -->
-    <div
-      class="w-full h-screen flex justify-center items-center font-medium text-gray-800"
-      v-else
-    >
-      Loading comments...
     </div>
   </div>
 
@@ -82,6 +82,7 @@ const userStore = useUserStore();
 const commentsStore = useCommentsStore();
 
 const comments = ref(commentsStore.getAllComments);
+const pageInfo = ref("");
 
 // modal states and funcs
 const { isModalOpen, openModal, closeModal } = useModal();
@@ -97,9 +98,22 @@ const processOpenModal = (id) => {
 };
 
 /**
+ * show if comments aren't available or comments are loading
+ */
+const showPageInfo = () => {
+  pageInfo.value = "Loading comments...";
+
+  setTimeout(() => {
+    pageInfo.value = "No comment made, be the first to comment :)";
+  }, 4000);
+};
+
+/**
  * On mounted hook
  */
 onMounted(() => {
   userStore.fetchCurrentUser();
+
+  showPageInfo();
 });
 </script>
