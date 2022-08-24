@@ -47,9 +47,13 @@
 
 <script setup>
 import { useCommentsStore } from "../stores/comments";
+import { useAlert } from "../composables/alert";
 
 // Initialize stores
 const commentsStore = useCommentsStore();
+
+// Initialize alert composable
+const { dropMssg } = useAlert();
 
 /****************************************
  * DEFINE EMITS

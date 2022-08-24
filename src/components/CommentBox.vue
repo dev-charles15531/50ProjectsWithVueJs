@@ -80,6 +80,7 @@
  */
 import { reactive, ref, computed, watch, inject } from "vue";
 import moment from "moment";
+import { useAlert } from "../composables/alert";
 import { useCommentsStore } from "../stores/comments";
 
 /****************************************
@@ -111,6 +112,11 @@ const parentCommentId = inject("parent-comment-id", "");
  */
 const commentsStore = useCommentsStore();
 
+/**
+ * INITIALIZE ALERT COMPOSABLE
+ */
+const { dropMssg } = useAlert();
+
 // get the username of the person the current user replied to(if it actully is a reply)
 const replyingTo = computed(() => {
   if (props.replyto === undefined) return "";
@@ -127,7 +133,7 @@ watch(enteredText, (newEnteredText) => {
 const commentData = reactive({
   content: "",
   createdAt: "",
-  score: 0,
+  score: [],
   user: props.currentUser,
 });
 
@@ -136,7 +142,7 @@ const replyData = reactive({
   commentId: parentCommentId,
   content: "",
   createdAt: "",
-  score: 0,
+  score: [],
   replyingTo: replyingTo.value.slice(1, -2),
   user: props.currentUser,
 });

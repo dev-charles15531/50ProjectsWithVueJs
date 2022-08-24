@@ -1,10 +1,18 @@
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 import COMMENTS_API from "../apis/comments";
+import { useAlert } from "../composables/alert";
 
 export const useCommentsStore = defineStore("comments", () => {
-  // error mssg
+  /**
+   * INITIALIZE ALERT COMPOSABLE
+   */
+  const { dropMssg } = useAlert();
+
+  // error mssg (redirects to a blank page with error message rendered)
   const errorMssg = ref("");
+  // app mssg (Alerts the message)
+  const appMssg = ref({});
 
   // All comments
   const allComments = ref([]);
@@ -67,7 +75,8 @@ export const useCommentsStore = defineStore("comments", () => {
 
       return response.data;
     } catch (error) {
-      console.error(error);
+      // error mssg
+      dropMssg("error", "An unknown error occured. Please, try again.");
     }
   };
 
@@ -86,8 +95,12 @@ export const useCommentsStore = defineStore("comments", () => {
 
       // empty the newData object
       newData.value = {};
+
+      // success message
+      dropMssg("success", "Done!");
     } catch (error) {
-      console.error(error);
+      // error mssg
+      dropMssg("error", "An unknown error occured. Please, try again.");
     }
   };
 
@@ -103,8 +116,12 @@ export const useCommentsStore = defineStore("comments", () => {
 
       // empty the newData object
       newData.value = {};
+
+      // success message
+      dropMssg("success", "Comment posted!");
     } catch (error) {
-      console.error(error);
+      // error mssg
+      dropMssg("error", "An unknown error occured. Please, try again.");
     }
   };
 
@@ -121,8 +138,12 @@ export const useCommentsStore = defineStore("comments", () => {
 
       // empty the toDeleteData object
       toDeleteData.value = {};
+
+      // success message
+      dropMssg("success", "Deleted successfully");
     } catch (error) {
-      console.error(error);
+      // error mssg
+      dropMssg("error", "An unknown error occured. Please, try again.");
     }
   };
 
@@ -200,5 +221,6 @@ export const useCommentsStore = defineStore("comments", () => {
     updateComment,
     processCommentDelete,
     errorMssg,
+    appMssg,
   };
 });

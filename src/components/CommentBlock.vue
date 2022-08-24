@@ -12,7 +12,10 @@
           class="flex flex-row lg:flex-col space-x-5 lg:space-x-0 lg:space-y-4 items-center bg-[#eaecf1] px-5 py-2 lg:px-3 lg:py-2 rounded-xl lg:rounded-md"
         >
           <!-- upvote icon -->
-          <div class="text-[#C5C6EF] hover:text-[#5457b6] cursor-pointer">
+          <div
+            class="text-[#C5C6EF] hover:text-[#5457b6] cursor-pointer"
+            @click="upVote"
+          >
             <svg width="11" height="11" xmlns="http://www.w3.org/2000/svg">
               <path
                 d="M6.33 10.896c.137 0 .255-.05.354-.149.1-.1.149-.217.149-.354V7.004h3.315c.136 0 .254-.05.354-.149.099-.1.148-.217.148-.354V5.272a.483.483 0 0 0-.148-.354.483.483 0 0 0-.354-.149H6.833V1.4a.483.483 0 0 0-.149-.354.483.483 0 0 0-.354-.149H4.915a.483.483 0 0 0-.354.149c-.1.1-.149.217-.149.354v3.37H1.08a.483.483 0 0 0-.354.15c-.1.099-.149.217-.149.353v1.23c0 .136.05.254.149.353.1.1.217.149.354.149h3.333v3.39c0 .136.05.254.15.353.098.1.216.149.353.149H6.33Z"
@@ -21,9 +24,14 @@
             </svg>
           </div>
           <!-- vote count -->
-          <div class="text-[#5457b6] font-medium">{{ comment.score }}</div>
+          <div class="text-[#5457b6] font-medium">
+            {{ comment.score.length }}
+          </div>
           <!-- downvote icon -->
-          <div class="text-[#C5C6EF] hover:text-[#5457b6] cursor-pointer">
+          <div
+            class="text-[#C5C6EF] hover:text-[#5457b6] cursor-pointer"
+            @click="downVote"
+          >
             <svg width="11" height="3" xmlns="http://www.w3.org/2000/svg">
               <path
                 d="M9.256 2.66c.204 0 .38-.056.53-.167.148-.11.222-.243.222-.396V.722c0-.152-.074-.284-.223-.395a.859.859 0 0 0-.53-.167H.76a.859.859 0 0 0-.53.167C.083.437.009.57.009.722v1.375c0 .153.074.285.223.396a.859.859 0 0 0 .53.167h8.495Z"
@@ -348,6 +356,7 @@ import Modal from "./Modal.vue";
 import { useCommentsStore } from "../stores/comments";
 import moment from "moment";
 import { useModal } from "../composables/modal";
+import { useAlert } from "../composables/alert";
 
 /****************************************
  * define props
@@ -366,14 +375,23 @@ const props = defineProps({
   },
 });
 
-// Initialize stores -----------------------------------------//
+/****************************************
+ * INITIALIZE STORES
+ ***************************************/
 const commentsStore = useCommentsStore();
-//------------------------------------------------------------//
 
 /****************************************
  * DEFINE EMITS
  ***************************************/
 const emit = defineEmits(["showModal"]);
+
+/****************************************
+ * INITIALIZE COMPOSABLES
+ ***************************************/
+// Alert
+const { dropMssg } = useAlert();
+// modal states and funcs
+const { isModalOpen, openModal, closeModal } = useModal();
 
 // provide the parent comment id to be accessible in all nested components
 provide("parent-comment-id", props.parentCommentId);
@@ -492,9 +510,6 @@ const editComment = (id, data) => {
   commentsStore.updateComment(id, data).finally(hideEditBox());
 };
 
-// modal states and funcs
-const { isModalOpen, openModal, closeModal } = useModal();
-
 /**
  * when delete button is clicked, show the modal
  */
@@ -503,6 +518,10 @@ const handleDelete = () => {
   emit("showModal");
 };
 
+/**
+ * Pop up modal for comment/reply delete confirmation
+ * @param {int} id id of comment/reply to delete
+ */
 const processOpenModal = (id) => {
   // populate data to use during delete
   let data = {
@@ -513,5 +532,146 @@ const processOpenModal = (id) => {
 
   // open modal
   openModal();
+};
+
+/**
+ * Makes an upvote to a comment or reply
+ * avoids duplicate votes and self voting
+ */
+const upVote = async () => {
+  // Comment id to edit
+  let commentId;
+  // Comment data to edit
+  let commentData;
+
+  // check if its a comment or a reply
+  if (props.comment.hasOwnProperty("replyingTo")) {
+    //---> its a reply <---//
+
+    // get the reply id
+    let replyId = props.comment.id;
+
+    // get the comment whose reply vote we want to add
+    let commentToAddReplyVote = await commentsStore.fetchSingleComment(
+      props.parentCommentId
+    );
+    // get all replies of the above comment
+    let allReplies = commentToAddReplyVote.replies;
+
+    // Find index of the specific reply to add vote
+    // add the vote at that index if the current user didn't previously make an upvote
+    let replyIndex = allReplies.findIndex((reply) => reply.id == replyId);
+    if (
+      allReplies[replyIndex].score.some(
+        (e) => e.username === props.currentUser.username
+      ) ||
+      props.currentUser.username === allReplies[replyIndex].user.username
+    ) {
+      // current user already made an upvote to the reply
+      return;
+    }
+    let voteAdder = { username: props.currentUser.username };
+    allReplies[replyIndex].score.push(voteAdder);
+
+    // reassign the replies
+    commentToAddReplyVote.replies = allReplies;
+
+    // assign comment id and data
+    commentId = props.parentCommentId;
+    commentData = commentToAddReplyVote;
+  } else {
+    //---> its a comment <---//
+
+    let commentToAddVote = props.comment;
+    if (
+      commentToAddVote.score.some(
+        (e) => e.username === props.currentUser.username
+      ) ||
+      props.currentUser.username === commentToAddVote.user.username
+    ) {
+      // current user already made an upvote
+      return;
+    }
+    let voteAdder = { username: props.currentUser.username };
+    commentToAddVote.score.push(voteAdder);
+
+    // assign comment id and data
+    commentId = commentToAddVote.id;
+    commentData = commentToAddVote;
+  }
+
+  // Edit the comment with the new vote
+  editComment(commentId, commentData);
+};
+
+/**
+ * Makes a downvote to a comment/reply if the current user previously made an upvote
+ */
+const downVote = async () => {
+  // Comment id to edit
+  let commentId;
+  // Comment data to edit
+  let commentData;
+
+  // check if its a comment or a reply
+  if (props.comment.hasOwnProperty("replyingTo")) {
+    //---> its a reply <---//
+
+    // get the reply id
+    let replyId = props.comment.id;
+
+    // get the comment whose reply vote we want to reduce
+    let commentToReduceReplyVote = await commentsStore.fetchSingleComment(
+      props.parentCommentId
+    );
+    // get all replies of the above comment
+    let allReplies = commentToReduceReplyVote.replies;
+
+    // Find index of the specific reply to reduce vote
+    // reduce the vote at that index if the current user didn't previously make an upvote
+    let replyIndex = allReplies.findIndex((reply) => reply.id == replyId);
+    if (
+      allReplies[replyIndex].score.some(
+        (e) => e.username === props.currentUser.username
+      )
+    ) {
+      allReplies[replyIndex].score = allReplies[replyIndex].score.filter(
+        (obj) => obj.username !== props.currentUser.username
+      );
+
+      // reassign the replies
+      commentToReduceReplyVote.replies = allReplies;
+
+      // assign comment id and data
+      commentId = props.parentCommentId;
+      commentData = commentToReduceReplyVote;
+    } else {
+      // current user never made an upvote to the reply
+      return;
+    }
+  } else {
+    //---> its a comment <---//
+
+    let commentToReduceVote = props.comment;
+    if (
+      commentToReduceVote.score.some(
+        (e) => e.username === props.currentUser.username
+      )
+    ) {
+      commentToReduceVote.score = commentToReduceVote.score.filter(
+        (obj) => obj.username !== props.currentUser.username
+      );
+
+      // assign comment id and data
+      commentId = commentToReduceVote.id;
+      commentData = commentToReduceVote;
+    } else {
+      // current user never made an upvote
+      return;
+    }
+  }
+
+  // Edit the comment with the new vote
+  editComment(commentId, commentData);
 };
 </script>

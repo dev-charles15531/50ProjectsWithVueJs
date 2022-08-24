@@ -1,5 +1,7 @@
 <template>
+  <!-- render this div if there are no errors fetching all comments -->
   <div class="h-full w-full" v-if="!commentsStore.errorMssg">
+    <!-- comments loaded -->
     <div class="w-full px-1 md:px-44 py-20" v-if="comments.length">
       <CommentBlock
         v-for="comment in comments"
@@ -10,6 +12,8 @@
       />
       <CommentBox :current-user="userStore.getCurrentUser" />
     </div>
+
+    <!-- comments loading -->
     <div
       class="w-full h-screen flex justify-center items-center font-medium text-gray-800"
       v-else
@@ -17,6 +21,8 @@
       Loading comments...
     </div>
   </div>
+
+  <!-- if there are errors fetching comments -->
   <div class="w-full h-screen flex justify-center items-center p-5" v-else>
     <div
       class="flex justify-center items-center h-48 w-full md:w-1/3 rounded-md bg-red-500 p-5"
@@ -45,8 +51,18 @@
     </div>
   </div>
 
+  <!-- teleport modal to body if its showing -->
   <Teleport to="body">
     <Modal v-if="isModalOpen" @hide-modal="closeModal" />
+  </Teleport>
+
+  <!-- teleport modal to body if its showing -->
+  <Teleport to="body">
+    <Alert
+      v-if="commentsStore.appMssg.hasOwnProperty('type')"
+      :type="commentsStore.appMssg.type"
+      :message="commentsStore.appMssg.message"
+    />
   </Teleport>
 </template>
 
@@ -58,6 +74,7 @@ import { useCommentsStore } from "./stores/comments";
 import CommentBlock from "./components/CommentBlock.vue";
 import CommentBox from "./components/CommentBox.vue";
 import Modal from "./components/Modal.vue";
+import Alert from "./components/Alert.vue";
 import { useModal } from "./composables/modal";
 
 // Initialize stores
@@ -68,7 +85,6 @@ const comments = ref(commentsStore.getAllComments);
 
 // modal states and funcs
 const { isModalOpen, openModal, closeModal } = useModal();
-
 const processOpenModal = (id) => {
   // populate data to use during delete
   let data = {
@@ -87,9 +103,3 @@ onMounted(() => {
   userStore.fetchCurrentUser();
 });
 </script>
-
-<style scoped>
-[v-cloak] {
-  display: none;
-}
-</style>
