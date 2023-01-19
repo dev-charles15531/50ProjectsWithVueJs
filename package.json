@@ -9,7 +9,9 @@
   },
   "dependencies": {
     "@vueuse/core": "^9.10.0",
+    "@vueuse/sound": "^2.0.0",
     "axios": "^0.27.2",
+    "jsmediatags": "^3.9.7",
     "moment": "^2.29.4",
     "pinia": "^2.0.14",
     "vue": "^3.2.25",
