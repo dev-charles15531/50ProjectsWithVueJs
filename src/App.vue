@@ -4,7 +4,7 @@
       class="w-full h-full bg-transparent md:flex md:justify-center md:items-center"
     >
       <div
-        class="h-full w-full bg-green-300 bg-[url('/public/imgs/owl.jpeg')] bg-cover bg-center md:h-5/6 xl:h-4/5 md:w-80 rounded-sm"
+        class="h-full w-full bg-green-300 bg-[url('/imgs/owl.jpeg')] bg-cover bg-center md:h-5/6 xl:h-4/5 md:w-80 rounded-sm"
       >
         <div class="w-full h-full flex flex-col items-center justify-between">
           <div class="w-full h-2/6 md:h-[38%]">

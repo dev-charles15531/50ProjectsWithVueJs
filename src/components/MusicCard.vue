@@ -8,7 +8,7 @@
       >
         <img
           class="h-24 md:h-16 w-4/12 md:w-3/12 rounded"
-          src="../../public/imgs/owl.jpeg"
+          src="/imgs/owl.jpeg"
         />
         <div class="w-7/12 flex flex-col">
           <span class="text-blue-700 text-xs font-normal">iPhone</span>
@@ -39,20 +39,30 @@
       <div class="mt-4 md:mt-2 w-full">
         <!-- Seek Progress bar -->
         <div
-          class="relative block backdrop-blur-sm bg-blue-700/30 rounded w-full h-1"
+          class="w-full h-1 relative block backdrop-blur-sm bg-blue-700/30 rounded"
         >
-          <span class="relative block rounded border-r-2 bg-white w-[60%] h-1">
-            <span
-              class="absolute w-2 h-2 rounded-full bg-white -right-1 top-[-2px]"
-            ></span>
-          </span>
+          <input
+            type="range"
+            min="0"
+            :max="totalPlayingMusicDuration"
+            :value="seekPosition"
+            class="slider"
+            @change="startSeek"
+            @keyup="startSeek"
+          />
+          <div
+            class="relative top-0 z-0 h-1 bg-white rounded"
+            :style="
+              'width: ' + (seekPosition / totalPlayingMusicDuration) * 100 + '%'
+            "
+          ></div>
         </div>
         <!-- End seek Progress bar -->
 
         <!-- Seek timer -->
         <div class="flex justify-between text-[10px] font-normal text-gray-600">
-          <h6>1:27</h6>
-          <h6>-2:06</h6>
+          <h6>{{ seekPlayed }}</h6>
+          <h6>{{ formattedTotalPlayingMusicDuration }}</h6>
         </div>
         <!-- End seek timer -->
 
@@ -60,12 +70,13 @@
           <!-- Previous icon -->
           <div>
             <svg
+              @click="previous()"
               xmlns="http://www.w3.org/2000/svg"
               fill="#626e67"
               viewBox="0 0 24 24"
               stroke-width="1.5"
               stroke="currentColor"
-              class="w-9 h-9 text-transparent"
+              class="w-9 h-9 hover:w-[37px] cursor-pointer text-transparent transition-all"
             >
               <path
                 stroke-linecap="round"
@@ -79,17 +90,35 @@
           <!-- Play/Pause icon -->
           <div>
             <svg
+              v-if="isMusicplaying"
+              @click="pause()"
               xmlns="http://www.w3.org/2000/svg"
               fill="#626e67"
               viewBox="0 0 24 24"
               stroke-width="5.5"
               stroke="currentColor"
-              class="w-9 h-7 text-[#626e67]"
+              class="w-9 h-7 hover:w-[37px] cursor-pointer text-[#626e67] transition-all"
             >
               <path
                 stroke-linecap="round"
                 stroke-linejoin="round"
                 d="M15.75 5.25v13.5m-7.5-13.5v13.5"
+              />
+            </svg>
+            <svg
+              v-else
+              @click="startPlaying()"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="#626e67"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-9 h-7 hover:w-[37px] cursor-pointer text-[#626e67] transition-all"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z"
               />
             </svg>
           </div>
@@ -98,12 +127,13 @@
           <!-- Next icon -->
           <div>
             <svg
+              @click="next()"
               xmlns="http://www.w3.org/2000/svg"
               fill="#626e67"
               viewBox="0 0 24 24"
               stroke-width="1.5"
               stroke="currentColor"
-              class="w-9 h-9 text-transparent"
+              class="w-9 h-9 hover:w-[37px] cursor-pointer text-transparent transition-all"
             >
               <path
                 stroke-linecap="round"
@@ -137,21 +167,26 @@
           </div>
           <!-- End sound down icon -->
 
-          <!-- Seek Progress bar -->
+          <!-- Volume bar -->
           <div class="w-10/12">
             <div
-              class="relative block backdrop-blur-sm bg-blue-700/30 rounded w-full h-1"
+              class="w-full h-1 relative block backdrop-blur-sm bg-blue-700/30 rounded"
             >
-              <span
-                class="relative block rounded border-r-2 bg-white w-[60%] h-1"
-              >
-                <span
-                  class="absolute w-4 h-4 rounded-full bg-white -right-1 top-[-6px]"
-                ></span>
-              </span>
+              <input
+                type="range"
+                min="0"
+                max="100"
+                :value="volume * 100"
+                class="vslider"
+                @change="changeVolume"
+              />
+              <div
+                class="relative top-0 z-0 h-1 bg-white rounded"
+                :style="'width: ' + volume * 100 + '%'"
+              ></div>
             </div>
           </div>
-          <!-- End seek Progress bar -->
+          <!-- End volume bar -->
 
           <!-- Sound up icon -->
           <div class="w-1/12">
@@ -178,14 +213,312 @@
 </template>
 
 <script setup>
-// import { read } from "jsmediatags";
+import { onMounted, ref, watch } from "vue";
+import { useHead } from "@vueuse/head";
+import { useSound } from "@vueuse/sound";
+import VueResizable from "vue-resizable";
+import moment, { duration } from "moment";
 
-// read("./music-file.mp3", {
-//   onSuccess: function (tag) {
-//     console.log(tag);
-//   },
-//   onError: function (error) {
-//     console.log(":(", error.type, error.info);
-//   },
-// });
+const jsmediatags = ref(null);
+
+// set some site head data
+useHead(
+  {
+    title: "iPhone Lockscreen Music Player | 50 Projects With VueJs",
+    script: [
+      {
+        src: "/js/jsmediatags.min.js",
+        tagPosition: "bodyClose",
+        onload: () => {
+          initExternalJs(window.jsmediatags);
+        },
+      },
+    ],
+  },
+  { mode: "client" }
+);
+
+// initializes the external js library (jsmediatags)
+const initExternalJs = (value) => {
+  jsmediatags.value = value;
+};
+
+// Relative path to music folder
+const musicFolder = "/musics/";
+// Get all available music filenames
+const availableMp3s = ref([
+  "Omah-Lay-Bad-Influence.mp3",
+  "JeriQ_-_Back_To_Basics.mp3",
+  "JeriQ_-_Billion_Dollar_Dream.mp3",
+  "JeriQ_-_Remember.mp3",
+  "JeriQ-Financial-Conji.mp3",
+  "JeriQ-Paper.mp3",
+]);
+
+// the array index of the current playing music
+const currentPlayingMusic = ref(0);
+// the music initial duration
+const initialPlayingMusicDuration = ref("");
+// the music total duration
+const totalPlayingMusicDuration = ref(0);
+const formattedTotalPlayingMusicDuration = ref("");
+// if the music is playing or not
+const isMusicplaying = ref(false);
+// the active sound id
+const soundId = ref(0);
+// the interval function id for seeking onplay music duration/range
+const seekInterval = ref(0);
+// the current seek position
+const seekPosition = ref(0);
+// the seek duration played
+const seekPlayed = ref("0:00");
+// sound volume
+const volume = ref(0);
+
+// loading useSound composable
+const { sound } = useSound(
+  musicFolder + availableMp3s.value[currentPlayingMusic.value],
+  {
+    html5: true,
+    preload: "metadata",
+    onload: () => {
+      // set music total duration
+      totalPlayingMusicDuration.value = sound.value.duration();
+      seekPlayed.value = "0:00";
+
+      // set volume
+      volume.value = sound.value.volume();
+
+      console.log("loaded");
+
+      // read media file and get music info
+      //   const imgUrl = new URL(
+      //     musicFolder + availableMp3s.value[currentPlayingMusic.value],
+      //     import.meta.url
+      //   ).href;
+      //   window.jsmediatags.read(imgUrl, {
+      //     onSuccess: function (tag) {
+      //       console.log(tag);
+      //     },
+      //     onError: function (error) {
+      //       console.log(":(", error.type, error.info);
+      //     },
+      //   });
+    },
+    onplay: () => {
+      clearInterval(seekInterval.value);
+      isMusicplaying.value = true;
+      seekInterval.value = setInterval(() => {
+        seekPosition.value = sound.value.seek();
+        // set the duration of seek played
+        seekPlayed.value = sToHHmm(sound.value.seek());
+        // set the duration of seek un-played
+        formattedTotalPlayingMusicDuration.value =
+          "-" + sToHHmm(totalPlayingMusicDuration.value - sound.value.seek());
+      }, 1000);
+      console.log("playing!");
+    },
+    onseek: () => {
+      console.log("seeked!");
+    },
+    onpause: () => {
+      clearInterval(seekInterval.value);
+      isMusicplaying.value = false;
+      console.log("paused!");
+    },
+    onend: () => {
+      clearInterval(seekInterval.value);
+      isMusicplaying.value = false;
+      formattedTotalPlayingMusicDuration.value = "0:00";
+      console.log("ended!");
+    },
+    onstop: () => {
+      clearInterval(seekInterval.value);
+      seekPosition.value = 0;
+      seekPlayed.value = "0:00";
+      console.log("stopped!");
+    },
+  }
+);
+
+/**
+ * watch the total playing music duration and format onchange
+ */
+watch(totalPlayingMusicDuration, (newTotalPlayingMusicDuration) => {
+  let duration = newTotalPlayingMusicDuration;
+  formattedTotalPlayingMusicDuration.value = sToHHmm(duration);
+});
+
+/**
+ * Seeks current music
+ * @param {event} evt The fired event triggerer
+ */
+function startSeek(evt) {
+  seekPosition.value = evt.target.value;
+  sound.value.seek(evt.target.value);
+}
+
+/**
+ * Format seconds to HH:mm
+ * @param {number} s The number of seconds
+ *
+ * @return The formatted time
+ */
+function sToHHmm(s) {
+  let durationInMins = Math.floor(s / 60);
+  let durationInSecs = Math.round(s % 60)
+    .toString()
+    .padStart(2, 0);
+
+  return durationInMins + ":" + durationInSecs;
+}
+
+/**
+ * Starts playing the music
+ * ie: the index 0 of the availableMp3s
+ *
+ * @return void
+ */
+function startPlaying() {
+  soundId.value = sound.value.play();
+}
+
+/**
+ * Pause the currently playing music
+ *
+ * @return void
+ */
+function pause() {
+  sound.value.pause(soundId.value);
+}
+
+/**
+ * Moves to the next music
+ * ie: increments the index of the current playing music by 1, or
+ * sets the index to 0 if it's set to the last
+ *
+ * @return void
+ */
+function next() {
+  sound.value.stop();
+  sound.value.unload();
+  if (currentPlayingMusic.value == availableMp3s.value.length - 1) {
+    currentPlayingMusic.value = 0;
+  } else {
+    currentPlayingMusic.value++;
+  }
+
+  sound.value._src =
+    musicFolder + availableMp3s.value[currentPlayingMusic.value];
+  sound.value.load();
+
+  if (isMusicplaying.value) startPlaying();
+}
+
+/**
+ * Moves to the previous music
+ * ie: decrements the index of the current playing music by 1, or
+ * sets the index to the last if it's set to 0
+ *
+ * @return void
+ */
+function previous() {
+  sound.value.stop();
+  sound.value.unload();
+  if (currentPlayingMusic.value == 0) {
+    currentPlayingMusic.value = availableMp3s.value.length - 1;
+  } else {
+    currentPlayingMusic.value--;
+  }
+
+  sound.value._src =
+    musicFolder + availableMp3s.value[currentPlayingMusic.value];
+  sound.value.load();
+
+  if (isMusicplaying.value) startPlaying();
+}
+
+function changeVolume(evt) {
+  volume.value = evt.target.value / 100;
+  sound.value.volume(evt.target.value / 100);
+}
+
+onMounted(() => {});
 </script>
+
+<style scoped>
+.slider,
+.vslider {
+  position: absolute;
+  -webkit-appearance: none;
+  width: 100%;
+  height: 5px;
+  z-index: 1;
+  background: transparent;
+}
+
+.slider::-webkit-slider-thumb,
+.vslider::-webkit-slider-thumb {
+  position: relative;
+  -webkit-appearance: none;
+  appearance: none;
+  border-radius: 100%;
+  background: #ffffff;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.slider::-ms-thumb,
+.vslider::-ms-thumb {
+  position: relative;
+  -webkit-appearance: none;
+  appearance: none;
+  border-radius: 100%;
+  background: #ffffff;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.slider::-moz-range-thumb,
+.vslider::-moz-range-thumb {
+  position: relative;
+  -webkit-appearance: none;
+  appearance: none;
+  border-radius: 100%;
+  background: #ffffff;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.slider::-webkit-slider-thumb {
+  width: 8px;
+  height: 8px;
+  right: 1.1px;
+}
+.slider::-ms-thumb {
+  width: 8px;
+  height: 8px;
+  right: 1.1px;
+}
+.slider::-moz-range-thumb {
+  width: 8px;
+  height: 8px;
+  right: 1.1px;
+}
+
+.vslider::-webkit-slider-thumb {
+  width: 16px;
+  height: 16px;
+  right: 0.3px;
+}
+.vslider::-ms-thumb {
+  width: 16px;
+  height: 16px;
+  right: 0.3px;
+}
+.vslider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  right: 0.3px;
+}
+</style>

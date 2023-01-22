@@ -47,10 +47,8 @@
         >
           <span
             class="flex justify-center items-center h-full"
-            :class="[
-              charging ? 'bg-green-500' : 'bg-yellow-300',
-              batteryLevelClass,
-            ]"
+            :class="[charging ? 'bg-green-500' : 'bg-yellow-300']"
+            :style="'width: ' + level * 100 + '%'"
           >
             <svg
               v-if="charging"
@@ -81,14 +79,10 @@
 import { Vue3Marquee } from "vue3-marquee";
 import "vue3-marquee/dist/style.css";
 import { useBattery, useOnline } from "@vueuse/core";
-import { ref } from "vue";
 
 // network status composable
 const isOnline = useOnline();
 
 // battery composable
 const { charging, level } = useBattery();
-
-// Get battery level as tailwind class
-const batteryLevelClass = "w-[" + level.value + "%]";
 </script>
