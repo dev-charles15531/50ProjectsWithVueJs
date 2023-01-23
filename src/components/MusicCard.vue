@@ -213,11 +213,9 @@
 </template>
 
 <script setup>
-import { onMounted, ref, watch } from "vue";
+import { onUnmounted, ref, watch } from "vue";
 import { useHead } from "@vueuse/head";
 import { useSound } from "@vueuse/sound";
-import VueResizable from "vue-resizable";
-import moment, { duration } from "moment";
 
 const jsmediatags = ref(null);
 
@@ -443,7 +441,10 @@ function changeVolume(evt) {
   sound.value.volume(evt.target.value / 100);
 }
 
-onMounted(() => {});
+onUnmounted(() => {
+  sound.value.stop();
+  sound.value.unload();
+});
 </script>
 
 <style scoped>
