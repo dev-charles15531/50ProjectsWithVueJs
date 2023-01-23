@@ -8,15 +8,18 @@
       >
         <img
           class="h-24 md:h-16 w-4/12 md:w-3/12 rounded"
-          src="/imgs/owl.jpeg"
+          src="/imgs/cover.jpg"
         />
         <div class="w-7/12 flex flex-col">
           <span class="text-blue-700 text-xs font-normal">iPhone</span>
           <span
             class="text-sm font-medium leading-4 whitespace-nowrap overflow-hidden"
-            >Highest In The Room gdrdrdrd tsetsrd uuu</span
           >
-          <span class="text-xs font-medium">Travis Scott</span>
+            {{ availableMp3s[currentPlayingMusic].slice(0, -4) }}
+          </span>
+          <span class="text-xs font-medium">
+            {{ allMusicArtists[currentPlayingMusic] }}
+          </span>
         </div>
         <div class="w-1/12">
           <svg
@@ -245,12 +248,22 @@ const initExternalJs = (value) => {
 const musicFolder = "/musics/";
 // Get all available music filenames
 const availableMp3s = ref([
-  "Omah-Lay-Bad-Influence.mp3",
-  "JeriQ_-_Back_To_Basics.mp3",
-  "JeriQ_-_Billion_Dollar_Dream.mp3",
-  "JeriQ_-_Remember.mp3",
-  "JeriQ-Financial-Conji.mp3",
-  "JeriQ-Paper.mp3",
+  "Bad Influence.mp3",
+  "Back To Basics.mp3",
+  "Billion Dollar Dream.mp3",
+  "Remember.mp3",
+  "Financial Conji.mp3",
+  "Paper.mp3",
+]);
+// Get all music artists
+// TODO use jsmediatags or something similar to read music metadata
+const allMusicArtists = ref([
+  "Omah Lay",
+  "JeriQ",
+  "JeriQ",
+  "JeriQ",
+  "JeriQ",
+  "JeriQ",
 ]);
 
 // the array index of the current playing music
