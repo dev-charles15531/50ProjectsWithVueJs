@@ -16,7 +16,7 @@
 
 ## Screenshot
 
-[](https://github.com/dev-charles15531/50ProjectsWithVueJs/blob/project13/public/screenshot/ss.png)
+[](https://raw.githubusercontent.com/dev-charles15531/50ProjectsWithVueJs/project13/public/screenshot/ss.png)
 
 ## Features
 
