@@ -11,10 +11,8 @@
     "@vueuse/core": "^9.10.0",
     "@vueuse/head": "^1.0.22",
     "@vueuse/sound": "^2.0.0",
-    "axios": "^0.27.2",
     "jsmediatags": "^3.9.7",
     "moment": "^2.29.4",
-    "pinia": "^2.0.14",
     "simple-vue-camera": "^1.1.3",
     "vue": "^3.2.25",
     "vue3-marquee": "^3.1.2"
