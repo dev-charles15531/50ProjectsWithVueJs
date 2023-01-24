@@ -8,7 +8,7 @@
   This is the 13th project under my [50 projects with vue](https://github.com/dev-charles15531/50ProjectsWithVueJs) learning journey and i'm happy exploring the magic and all sweet things one can do on the web with [vue 3](http://vuejs.org).
   Unfortunately, there's a functionality which i am unable to implement, and i believe there's someone out there who can do this and all i am asking for is your contribution (i'll highlight this feature below).
 
-    Your contributions and critiques are highly welcome here as that would be a means for me to get better.
+<b>🙏🏾Your contributions and critiques are highly welcome here as that would be a means for me to get better.</b>
 
 </td>
 </tr>
@@ -16,7 +16,7 @@
 
 ## Screenshot
 
-[](https://github.com/dev-charles15531/50ProjectsWithVueJs/blob/main/screenshots/ss-p-13.png)
+![alt text](https://github.com/dev-charles15531/50ProjectsWithVueJs/blob/project13/public/screenshot/ss.png?raw=true)
 
 ## Features
 
@@ -41,11 +41,11 @@ Want to contribute? Great!
 To fix a bug or enhance an existing module, follow these steps:
 
 - Fork the repo
-- Create a new branch from the branch you wish to improve, with a suffix of '-project15', to your desired name (eg: `git checkout -b improve-code-readability-project14`)
+- Create a new branch from the branch you wish to improve, with a suffix of '-project13', to your desired name (eg: `git checkout -b improve-code-readability-project13`)
 - Make the appropriate changes in the files
 - Add changes to reflect the changes made
 - Commit your changes (`git commit -am 'Improved code readability'`)
-- Push to the branch (`git push origin improve-code-readability-project14`)
+- Push to the branch (`git push origin improve-code-readability-project13`)
 - Create a Pull Request
 
 If your pull request gets merged, you would be added as a contributor to the project.
