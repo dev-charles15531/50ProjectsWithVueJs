@@ -17,3 +17,4 @@ It would really be an honor if i get critiques from you guys as this more of a l
 - **[Project 11 - IP Address Tracker](https://github.com/dev-charles15531/50DaysOfVueJs/tree/project11)**
 - **[Project 12 - Interactive Comment Section](https://github.com/dev-charles15531/50DaysOfVueJs/tree/project12)**
 - **[Project 13 - iPhone Lockscreen + mp3 Player](https://github.com/dev-charles15531/50DaysOfVueJs/tree/project13)**
+- **[Project 14 - Events Calendar](https://github.com/dev-charles15531/v3-events-calendar)**
