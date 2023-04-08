@@ -1,4 +1,4 @@
-# 50DaysOfVueJs
+# 50ProjectsWithVueJs
 
 This repo was created to embark on a 50 project driven vue js mastery.
 
